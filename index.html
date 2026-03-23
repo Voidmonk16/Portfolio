@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="terminal">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>VoidMonk — Developer Portfolio</title>
+<meta name="description" content="Muthu Vignesh S · Flutter dev. I build with AI. Security-focused. Self-taught.">
+<meta property="og:title" content="VoidMonk — Developer Portfolio">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=UnifrakturMaguntia&family=IM+Fell+English:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+
+/* ── THEMES ── */
+[data-theme="terminal"]{--bg:#06090a;--bg2:#0d1214;--bg3:#131a1d;--border:#1a2226;--border-hi:rgba(57,211,83,.3);--text:#39d353;--text2:#5a7080;--text3:#243040;--bright:#c8d6de;--accent:#f0a500;--accent2:#4ecde6;--danger:#e05252;--fn:'JetBrains Mono','Courier New',monospace;--fd:'JetBrains Mono',monospace;--rad:6px}
+[data-theme="medieval"]{--bg:#0e0608;--bg2:#f5e6c0;--bg3:#ecdaaa;--border:#9b7a4f;--border-hi:#c8a06a;--text:#2a1608;--text2:#7a5535;--text3:#b89060;--bright:#180e06;--accent:#8b1818;--accent2:#4a3a10;--danger:#900;--table:#1a0a0e;--rod:#3d1f0a;--fn:'IM Fell English','Georgia',serif;--fd:'UnifrakturMaguntia',cursive;--rad:3px}
+[data-theme="web1991"]{--bg:#c0c0c0;--bg2:#ffffff;--bg3:#e8e8e8;--border:#808080;--border-hi:#000;--text:#000000;--text2:#555;--text3:#999;--bright:#000080;--accent:#000080;--accent2:#00008b;--danger:#cc0000;--fn:'Times New Roman',Times,serif;--fd:'Times New Roman',serif;--rad:0px}
+[data-theme="aichat"]{--bg:#f0f2f5;--bg2:#ffffff;--bg3:#f7f8fa;--border:#e0e6ed;--border-hi:#c7d2fe;--text:#111827;--text2:#6b7280;--text3:#9ca3af;--bright:#0f172a;--accent:#6d28d9;--accent2:#059669;--danger:#dc2626;--fn:'Plus Jakarta Sans',system-ui,sans-serif;--fd:'Plus Jakarta Sans',sans-serif;--rad:18px}
+[data-theme="future"]{--bg:#000306;--bg2:#010d18;--bg3:#00121f;--border:#003040;--border-hi:rgba(0,229,204,.35);--text:#00e5cc;--text2:#005566;--text3:#003344;--bright:#d8f4f8;--accent:#ff006e;--accent2:#39ff14;--danger:#ff2222;--fn:'JetBrains Mono',monospace;--fd:'Orbitron',sans-serif;--rad:2px}
+
+/* ── BASE ── */
+body{background:var(--bg);color:var(--text);font-family:var(--fn);min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s}
+[data-theme="terminal"] body,[data-theme="future"] body{overflow:hidden;height:100vh}
+
+/* ── OVERLAYS ── */
+#scanlines{position:fixed;inset:0;pointer-events:none;z-index:9000;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.055) 2px,rgba(0,0,0,.055) 4px);opacity:0;transition:opacity .5s}
+[data-theme="terminal"] #scanlines,[data-theme="future"] #scanlines{opacity:1}
+#vignette{position:fixed;inset:0;pointer-events:none;z-index:8999;background:radial-gradient(ellipse at 50% 50%,transparent 48%,rgba(0,0,0,.7) 100%);opacity:0;transition:opacity .5s}
+[data-theme="terminal"] #vignette,[data-theme="future"] #vignette,[data-theme="medieval"] #vignette{opacity:1}
+#gridlines{position:fixed;inset:0;pointer-events:none;z-index:8998;background-image:linear-gradient(rgba(0,80,100,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,80,100,.07) 1px,transparent 1px);background-size:40px 40px;opacity:0;transition:opacity .5s}
+[data-theme="future"] #gridlines{opacity:1}
+
+/* ── EDEX HEADER (terminal only) ── */
+.edex-hdr{display:none;height:34px;background:var(--bg3);border-bottom:1px solid var(--border);align-items:center;padding:0 14px;gap:0;flex-shrink:0;font-family:var(--fn);font-size:10px;letter-spacing:.1em;z-index:100;position:relative}
+[data-theme="terminal"] .edex-hdr{display:flex}
+.edex-logo{color:var(--text);font-weight:700;letter-spacing:.18em;font-size:10px;white-space:nowrap}
+.edex-logo span{color:var(--accent)}
+.edex-hspacer{flex:1}
+.edex-hstats{display:flex;gap:18px;align-items:center}
+.edex-hs{color:var(--text2);font-size:9px;letter-spacing:.12em}
+.edex-hs b{color:var(--text)}
+.edex-time{color:var(--accent);font-size:10px;font-weight:700;letter-spacing:.1em;min-width:70px;text-align:right}
+.edex-corner{position:absolute;width:14px;height:14px;border-style:solid;border-color:var(--text);border-width:0;opacity:.5}
+.edex-corner.tl{top:0;left:0;border-top-width:1.5px;border-left-width:1.5px}
+.edex-corner.tr{top:0;right:0;border-top-width:1.5px;border-right-width:1.5px}
+
+/* ── PAGE LAYOUT ── */
+.page-layout{display:flex;align-items:flex-start;justify-content:center;padding:60px 12px 100px;min-height:100vh;transition:padding .4s}
+[data-theme="terminal"] .page-layout{padding:0;height:calc(100vh - 34px);align-items:stretch}
+
+/* ── SIDE PANELS ── */
+.sp{display:none;flex-direction:column;overflow:hidden;background:var(--bg2);flex-shrink:0}
+.sp-left{width:250px;border-right:1px solid var(--border)}
+.sp-right{width:220px;border-left:1px solid var(--border)}
+[data-theme="terminal"] .sp{display:flex}
+
+.sp-sec{padding:7px 12px 5px;font-size:8.5px;font-weight:700;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0}
+.sp-sec::before{content:'//';opacity:.4}
+.sp-body{padding:0;overflow:hidden}
+
+/* Globe */
+#globeCv{display:block;margin:4px auto;cursor:crosshair}
+.geo-rows{padding:0 2px}
+.geo-row{display:flex;justify-content:space-between;align-items:center;padding:3px 10px;font-size:9px;border-bottom:1px solid rgba(255,255,255,.03)}
+.geo-row:last-child{border-bottom:none}
+.geo-k{color:var(--text2);letter-spacing:.1em}
+.geo-v{color:var(--text);font-weight:700;font-family:var(--fn)}
+
+/* Process list */
+.proc-list{padding:4px 0}
+.proc-item{display:flex;align-items:center;gap:8px;padding:4px 10px;font-size:9.5px}
+.proc-name{color:var(--bright);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.proc-pct-wrap{width:36px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;flex-shrink:0}
+.proc-pct-fill{height:100%;border-radius:2px;background:var(--text);transition:width .8s ease}
+.proc-val{color:var(--text2);font-size:8.5px;width:26px;text-align:right;flex-shrink:0}
+
+/* Metric graphs */
+.metric-block{padding:8px 10px 6px;border-bottom:1px solid var(--border)}
+.metric-block:last-child{border-bottom:none}
+.mb-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:8.5px;letter-spacing:.14em}
+.mb-lbl{color:var(--text2)}
+.mb-val{color:var(--text);font-weight:700}
+.graph-cv{display:block;width:100%;height:38px}
+
+/* Sys info */
+.sys-info{padding:4px 2px}
+.si-row{display:flex;justify-content:space-between;padding:3px 10px;font-size:9px;border-bottom:1px solid rgba(255,255,255,.03)}
+.si-row:last-child{border-bottom:none}
+.si-k{color:var(--text2);letter-spacing:.1em}
+.si-v{color:var(--bright);font-family:var(--fn)}
+.si-v.ok{color:var(--text)}
+.si-v.warn{color:var(--accent)}
+
+/* Uptime */
+.uptime-bar{padding:6px 10px;font-size:9px;color:var(--text2);border-top:1px solid var(--border);letter-spacing:.08em}
+.uptime-bar b{color:var(--accent2)}
+
+/* ── WINDOW WRAP ── */
+.window-wrap{width:100%;max-width:880px;display:flex;flex-direction:column}
+[data-theme="terminal"] .window-wrap{max-width:none;flex:1}
+
+/* ── WINDOW ── */
+.window{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);overflow:hidden;transition:border-color .4s,background .4s;position:relative;display:flex;flex-direction:column}
+[data-theme="terminal"] .window{box-shadow:none;border:none;border-radius:0;flex:1}
+[data-theme="future"]   .window{box-shadow:0 0 50px rgba(0,229,204,.06);border-color:rgba(0,229,204,.18)}
+[data-theme="aichat"]   .window{box-shadow:0 4px 28px rgba(0,0,0,.1)}
+[data-theme="medieval"] .window{box-shadow:0 10px 60px rgba(0,0,0,.9);border:2px solid var(--border)}
+[data-theme="web1991"]  .window{border:2px outset #fff;box-shadow:2px 2px 0 #000}
+
+[data-theme="future"] .window::before,[data-theme="future"] .window::after{content:'';position:absolute;width:22px;height:22px;border-style:solid;border-color:var(--text);border-width:0;z-index:5;pointer-events:none}
+[data-theme="future"] .window::before{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}
+[data-theme="future"] .window::after{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}
+[data-theme="medieval"] .window::before{content:'❧  ·  ✦  ·  ✧  ·  ✦  ·  ❧';display:block;text-align:center;font-size:11px;letter-spacing:.2em;color:var(--accent2);padding:6px;background:var(--bg3);border-bottom:1px solid var(--border)}
+
+/* ── MEDIEVAL VELVET TABLE ── */
+[data-theme="medieval"] body{
+  background:var(--table);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,.012) 0px,
+      rgba(255,255,255,.012) 1px,
+      transparent 1px,
+      transparent 8px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,.012) 0px,
+      rgba(255,255,255,.012) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+}
+/* Gold edge glow */
+[data-theme="medieval"] body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  box-shadow:inset 0 0 120px rgba(139,97,20,.18),
+             inset 0 0 40px rgba(139,97,20,.1);
+}
+
+/* ── SCROLL PARCHMENT ── */
+[data-theme="medieval"] .window{
+  border-radius:12px 8px 14px 10px;
+  border:1px solid #9b7a4f;
+  box-shadow:
+    0 0 0 1px rgba(200,149,42,.15),
+    0 20px 80px rgba(0,0,0,.85),
+    inset 0 0 60px rgba(180,130,60,.06),
+    inset 0 0 12px rgba(0,0,0,.08);
+  position:relative;
+}
+/* Aged parchment layers */
+[data-theme="medieval"] .output{
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(210,160,80,.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(180,130,50,.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 40%, rgba(230,190,100,.04) 0%, transparent 40%),
+    var(--bg2);
+  /* Ruled parchment lines */
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(210,160,80,.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(180,130,50,.07) 0%, transparent 50%),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 27px,
+      rgba(155,122,79,.1) 27px,
+      rgba(155,122,79,.1) 28px
+    );
+}
+
+/* ── SCROLL RODS ── */
+.scroll-rod{
+  display:none;
+  width:100%;
+  height:18px;
+  background:linear-gradient(180deg,
+    #5c3010 0%,
+    #3d1f0a 30%,
+    #2a1408 50%,
+    #3d1f0a 70%,
+    #5c3010 100%
+  );
+  position:relative;
+  flex-shrink:0;
+  z-index:2;
+}
+.scroll-rod::before,.scroll-rod::after{
+  content:'';
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:radial-gradient(circle at 38% 35%,#c8952a,#7a4a08);
+  box-shadow:0 2px 6px rgba(0,0,0,.6);
+}
+.scroll-rod::before{left:-4px}
+.scroll-rod::after{right:-4px}
+.scroll-rod-shine{
+  position:absolute;
+  top:3px;
+  left:24px;
+  right:24px;
+  height:3px;
+  border-radius:2px;
+  background:linear-gradient(90deg,
+    transparent,
+    rgba(255,255,255,.12) 20%,
+    rgba(255,255,255,.22) 50%,
+    rgba(255,255,255,.12) 80%,
+    transparent
+  );
+}
+[data-theme="medieval"] .scroll-rod{display:block}
+
+/* ── WAX SEAL ── */
+.wax-seal{
+  display:none;
+  position:absolute;
+  bottom:-16px;
+  right:28px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#c0302a,#7a0e0a);
+  box-shadow:
+    0 3px 12px rgba(0,0,0,.6),
+    0 0 0 2px rgba(180,60,50,.4),
+    inset 0 1px 3px rgba(255,255,255,.15);
+  z-index:10;
+  align-items:center;
+  justify-content:center;
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:15px;
+  color:rgba(255,220,180,.85);
+  text-shadow:0 1px 2px rgba(0,0,0,.5);
+  pointer-events:none;
+  letter-spacing:0;
+}
+[data-theme="medieval"] .wax-seal{display:flex}
+
+/* ── MEDIEVAL TITLEBAR ── */
+[data-theme="medieval"] .titlebar{
+  background:linear-gradient(180deg,#e8d8a8,#ddc99a);
+  border-bottom:2px solid #9b7a4f;
+  position:relative;
+}
+[data-theme="medieval"] .titlebar::after{
+  content:'';
+  position:absolute;
+  bottom:-1px;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,149,42,.5),transparent);
+}
+
+/* ── MEDIEVAL INPUTROW ── */
+[data-theme="medieval"] .inputrow{
+  background:linear-gradient(180deg,#ddc99a,#e8d8a8);
+  border-top:2px solid #9b7a4f;
+}
+
+/* ── MOBILE SAFE ── */
+@media(max-width:900px){
+  .scroll-rod{height:14px}
+  .scroll-rod::before,.scroll-rod::after{width:17px;height:17px}
+  .wax-seal{width:34px;height:34px;font-size:12px;bottom:-12px;right:18px}
+}
+
+/* ── TITLEBAR ── */
+.titlebar{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);user-select:none;transition:all .4s;flex-shrink:0}
+[data-theme="terminal"] .titlebar{background:var(--bg3)}
+[data-theme="future"]   .titlebar{background:var(--bg3)}
+[data-theme="medieval"] .titlebar{background:var(--bg3)}
+[data-theme="web1991"]  .titlebar{background:#000080;padding:5px 8px}
+[data-theme="aichat"]   .titlebar{background:#fff;border-bottom:1px solid #e8edf2}
+[data-theme="medieval"] .dots,[data-theme="future"] .dots,[data-theme="web1991"] .dots{display:none}
+.dots{display:flex;gap:7px}
+.dot{width:11px;height:11px;border-radius:50%}
+.dot-r{background:#e05252}.dot-y{background:#f0a500}.dot-g{background:#39d353}
+.tb-label{flex:1;text-align:center;font-size:10.5px;letter-spacing:.06em;color:var(--text2)}
+[data-theme="web1991"]  .tb-label{color:#fff;font-size:12px;text-align:left;font-family:inherit}
+[data-theme="aichat"]   .tb-label{color:var(--bright);font-size:14px;font-weight:600;font-family:var(--fn)}
+[data-theme="future"]   .tb-label{color:var(--text);letter-spacing:.14em;font-size:10px;font-family:var(--fd)}
+[data-theme="medieval"] .tb-label{color:var(--text);font-size:13px;font-family:var(--fd)}
+.tb-r{width:44px;display:flex;justify-content:flex-end}
+
+/* ── OUTPUT ── */
+.output{padding:18px 20px 12px;min-height:360px;max-height:70vh;overflow-y:auto;scroll-behavior:smooth;transition:background .4s;flex:1}
+[data-theme="terminal"] .output{max-height:none;min-height:0;padding:14px 16px 10px}
+[data-theme="aichat"]   .output{background:var(--bg3);padding:14px 12px}
+[data-theme="web1991"]  .output{background:#fff}
+[data-theme="medieval"] .output{background-image:radial-gradient(ellipse at 25% 75%,rgba(155,105,55,.07),transparent 55%)}
+.output::-webkit-scrollbar{width:3px}
+.output::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ── INPUT ROW ── */
+.inputrow{display:flex;align-items:center;gap:10px;padding:10px 20px 12px;border-top:1px solid var(--border);background:var(--bg2);transition:all .4s;position:relative;flex-shrink:0}
+[data-theme="terminal"] .inputrow{border-top-color:var(--border);background:var(--bg3)}
+[data-theme="web1991"]  .inputrow{background:#dfdfdf;border-top:2px inset #808080}
+[data-theme="aichat"]   .inputrow{background:#fff;border-top:1px solid #e0e6ed;padding:12px 16px}
+[data-theme="medieval"] .inputrow{background:var(--bg3);border-top:1px dashed var(--border)}
+.prompt-sym{color:var(--text);font-weight:700;white-space:nowrap;font-size:12.5px;flex-shrink:0;transition:color .4s}
+[data-theme="medieval"] .prompt-sym{font-style:italic;color:var(--text2);font-size:12px}
+[data-theme="future"]   .prompt-sym{color:var(--accent);letter-spacing:.12em;font-size:10px}
+[data-theme="aichat"]   .prompt-sym{display:none}
+#inp{flex:1;background:transparent;border:none;outline:none;color:var(--bright);font-family:var(--fn);font-size:13px;caret-color:var(--text);transition:color .4s;min-width:0}
+[data-theme="aichat"] #inp{background:var(--bg3);border:1px solid var(--border);border-radius:26px;padding:10px 18px}
+[data-theme="web1991"] #inp{border:2px inset #808080;background:#fff;padding:3px 6px;font-size:13px}
+#inp::placeholder{color:var(--text2);opacity:.5}
+[data-theme="future"] .inputrow::after{content:'SYS:READY';font-size:9px;color:var(--text2);letter-spacing:.18em;font-family:var(--fd);position:absolute;right:22px;top:50%;transform:translateY(-50%);pointer-events:none}
+
+/* ── ITEMS ── */
+.item{margin-bottom:3px;line-height:1.82;font-size:13px}
+.item.gap{margin-bottom:14px}
+[data-theme="terminal"] .item.new{animation:termIn .1s ease forwards}
+[data-theme="medieval"] .item.new{animation:inkIn .5s ease forwards}
+[data-theme="aichat"]   .item.new{animation:floatIn .26s ease forwards}
+[data-theme="future"]   .item.new{animation:glitchIn .28s steps(4) forwards}
+@keyframes termIn  {from{opacity:0}to{opacity:1}}
+@keyframes inkIn   {from{opacity:0;filter:blur(4px) sepia(.3)}to{opacity:1;filter:none}}
+@keyframes floatIn {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes glitchIn{0%{opacity:0;transform:translateX(-10px) skewX(-8deg)}33%{opacity:.5;transform:translateX(5px)}66%{opacity:.8;transform:translateX(-2px)}100%{opacity:1;transform:none}}
+
+/* Typewriter cursor */
+.tw-cur{display:inline-block;color:var(--text);animation:twBlink .6s step-end infinite;margin-left:1px}
+@keyframes twBlink{50%{opacity:0}}
+
+/* ── ECHO ── */
+.echo{display:flex;align-items:baseline;gap:8px;margin:10px 0 4px;flex-wrap:wrap}
+.echo-sym{color:var(--text);font-weight:700}
+.echo-cmd{color:var(--bright);font-weight:500}
+[data-theme="aichat"] .echo{justify-content:flex-end;margin:8px 0}
+[data-theme="aichat"] .echo .echo-sym{display:none}
+[data-theme="aichat"] .echo .echo-cmd{background:var(--accent);color:#fff;border-radius:20px 20px 4px 20px;padding:9px 16px;font-weight:400;max-width:78%;word-break:break-word}
+[data-theme="medieval"] .echo{border-top:1px solid rgba(155,122,79,.3);padding-top:8px;margin-top:14px}
+
+/* ── AI CHAT BUBBLE ── */
+.ai-wrap{display:flex;align-items:flex-start;gap:10px;margin:8px 0}
+.ai-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700}
+.ai-bubble{background:var(--bg2);border:1px solid var(--border);border-radius:4px 18px 18px 18px;padding:11px 16px;max-width:90%;font-size:13px;line-height:1.8;color:var(--bright)}
+
+/* ── SECTION HEADERS ── */
+.sh{color:var(--accent);font-weight:700;font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin:16px 0 9px;display:flex;align-items:center;gap:8px}
+.sh::after{content:'';flex:1;height:1px;background:var(--border)}
+[data-theme="medieval"] .sh{font-family:var(--fd);font-size:16px;text-transform:none;letter-spacing:0}
+[data-theme="medieval"] .sh::before{content:'❧ '}
+[data-theme="web1991"] .sh{font-size:17px;font-weight:bold;color:#000080;text-transform:none;letter-spacing:0;text-decoration:underline}
+[data-theme="web1991"] .sh::after{display:none}
+[data-theme="future"] .sh{color:var(--text);font-family:var(--fd);font-size:9px}
+
+/* ── TAGS ── */
+.tag{display:inline-block;border-radius:4px;padding:2px 7px;font-size:10.5px;margin:2px 3px 2px 0;border:1px solid}
+.tg{background:rgba(57,211,83,.08);color:var(--text);border-color:rgba(57,211,83,.2)}
+.ta{background:rgba(240,165,0,.08);color:var(--accent);border-color:rgba(240,165,0,.2)}
+.tc{background:rgba(78,205,230,.08);color:var(--accent2);border-color:rgba(78,205,230,.2)}
+[data-theme="web1991"] .tag{border:1px solid #808080;background:#dfdfdf;color:#000;border-radius:0}
+[data-theme="aichat"] .tag{border-radius:20px;font-weight:500}
+
+/* ── CARDS ── */
+.card{border:1px solid var(--border);border-radius:var(--rad);padding:14px 16px;margin:8px 0;background:var(--bg3);transition:border-color .2s}
+.card:hover{border-color:var(--accent)}
+.ct{color:var(--bright);font-weight:700;font-size:14px;margin-bottom:4px}
+.cd{color:var(--text2);font-size:12px;line-height:1.68;margin:5px 0 9px}
+.clinks{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;align-items:center}
+[data-theme="web1991"]  .card{border:2px inset #808080;border-radius:0;background:#f5f5f5}
+[data-theme="aichat"]   .card{border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+[data-theme="medieval"] .card{border-color:var(--accent2);background:rgba(245,220,165,.22)}
+.audit{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(57,211,83,.28);border-radius:5px;padding:3px 9px;font-size:10.5px;color:var(--text);background:rgba(57,211,83,.07);margin:3px 4px 3px 0}
+.pg-wrap{font-size:11.5px;color:var(--text2);margin:7px 0 5px}
+a{color:var(--accent2);text-decoration:none;border-bottom:1px solid rgba(78,205,230,.28);transition:all .15s}
+a:hover{color:var(--bright);border-color:var(--bright)}
+[data-theme="web1991"] a{color:#0000ee;text-decoration:underline}
+[data-theme="web1991"] a:visited{color:#551a8b}
+.blink{animation:blinkAnim 1s step-end infinite}
+@keyframes blinkAnim{50%{opacity:0}}
+.hrow{display:grid;grid-template-columns:160px 1fr;gap:8px;padding:5px 0;font-size:13px;border-bottom:1px solid var(--border)}
+.hrow:last-child{border-bottom:none}
+.hc{color:var(--accent);font-weight:500}
+.hd{color:var(--text2)}
+.crow{display:flex;align-items:center;gap:12px;padding:7px 0;font-size:13px}
+.ci{color:var(--text);width:20px;text-align:center}
+
+/* ── FAB THEME SWITCHER ── */
+.fab-wrap{position:fixed;bottom:76px;right:14px;z-index:8500}
+@media(min-width:541px){.fab-wrap{bottom:20px}}
+.fab-btn{width:44px;height:44px;border-radius:50%;background:var(--accent);border:none;color:#000;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 18px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;position:relative;z-index:2}
+.fab-btn:hover{transform:scale(1.1)}
+.fab-btn.open{transform:rotate(135deg)}
+.fab-menu{position:absolute;bottom:52px;right:0;display:flex;flex-direction:column;gap:6px;align-items:flex-end;opacity:0;pointer-events:none;transform:translateY(14px) scale(.95);transform-origin:bottom right;transition:opacity .22s cubic-bezier(.4,0,.2,1),transform .22s cubic-bezier(.4,0,.2,1)}
+.fab-menu.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1)}
+.fab-era{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:22px;padding:6px 13px 6px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;box-shadow:0 3px 14px rgba(0,0,0,.45);letter-spacing:.04em;width:130px;justify-content:flex-start}
+.fab-era:hover{border-color:var(--accent);color:var(--text)}
+.fab-era.active{background:var(--accent);color:#000;font-weight:700;border-color:var(--accent)}
+.fab-era-ic{font-size:13px}
+
+/* ── MOBILE BAR ── */
+.mob{position:fixed;bottom:0;left:0;right:0;z-index:8000;backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);padding:7px 8px;display:none;gap:4px;flex-wrap:nowrap;overflow-x:auto;justify-content:center;-webkit-overflow-scrolling:touch}
+.mob::-webkit-scrollbar{display:none}
+@media(max-width:900px){.mob{display:flex}}
+.mob[data-theme-mob="terminal"]{background:rgba(6,9,10,.94)}
+.mob[data-theme-mob="medieval"]{background:rgba(12,7,4,.95);border-top-color:rgba(155,122,79,.3)}
+.mob[data-theme-mob="web1991"]{background:rgba(192,192,192,.96);border-top:2px outset #fff}
+.mob[data-theme-mob="aichat"]{background:rgba(255,255,255,.96);border-top-color:#e0e6ed}
+.mob[data-theme-mob="future"]{background:rgba(0,3,6,.96);border-top-color:rgba(0,229,204,.18)}
+.mbtn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:5px 10px;border-radius:5px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.mbtn:hover,.mbtn:active{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.26);color:#fff}
+.mob[data-theme-mob="aichat"] .mbtn{color:#374151;background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.12)}
+.mob[data-theme-mob="aichat"] .mbtn:hover{background:rgba(109,40,217,.1);border-color:rgba(109,40,217,.3);color:#6d28d9}
+.mob[data-theme-mob="web1991"] .mbtn{color:#000080;background:#dfdfdf;border:2px outset #fff;font-family:'Times New Roman',serif}
+.mbtn-theme{background:rgba(240,165,0,.15);border-color:rgba(240,165,0,.35);color:#f0a500}
+.mob[data-theme-mob="aichat"] .mbtn-theme{background:rgba(109,40,217,.1);border-color:rgba(109,40,217,.35);color:#6d28d9}
+.mob[data-theme-mob="future"] .mbtn-theme{background:rgba(255,0,110,.12);border-color:rgba(255,0,110,.3);color:#ff006e}
+.mob-sep{width:1px;background:rgba(255,255,255,.1);flex-shrink:0;align-self:stretch;margin:2px 2px}
+
+/* ── HIRE MODAL ── */
+.h-ov{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .3s}
+.h-ov.open{opacity:1;pointer-events:all}
+.h-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:30px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;position:relative;transform:translateY(28px);transition:transform .3s}
+.h-ov.open .h-box{transform:translateY(0)}
+.h-title{font-size:17px;font-weight:700;color:var(--bright);margin-bottom:3px}
+.h-sub{font-size:12px;color:var(--text2);margin-bottom:24px}
+.h-x{position:absolute;top:18px;right:18px;background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;padding:4px 8px}
+.h-x:hover{color:var(--bright)}
+.hf{margin-bottom:16px}
+.hl{display:block;font-size:10px;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.1em}
+.hi,.hsel,.hta{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 13px;color:var(--bright);font-family:var(--fn);font-size:13px;outline:none;transition:border-color .15s}
+.hi:focus,.hsel:focus,.hta:focus{border-color:var(--accent)}
+.hta{min-height:90px;resize:vertical}
+.hsel option{background:var(--bg3)}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.u-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;margin-bottom:16px}
+.u-row input{accent-color:var(--accent);margin-top:2px;flex-shrink:0}
+.u-title{font-size:13px;font-weight:500;color:var(--bright)}
+.u-desc{font-size:11px;color:var(--text2);margin-top:2px}
+.h-submit{width:100%;background:var(--accent);color:#000;border:none;border-radius:9px;padding:13px;font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;letter-spacing:.03em}
+.h-submit:hover{opacity:.88}
+.h-submit:disabled{opacity:.45;cursor:not-allowed}
+.hp{position:absolute;left:-9999px;height:0;opacity:0;pointer-events:none;overflow:hidden}
+.h-msg{font-size:12px;margin-bottom:12px;min-height:18px}
+
+/* ── STORY MODAL ── */
+.story-ov{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9300;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(10px)}
+.story-ov.open{opacity:1;pointer-events:all}
+.story-box{background:var(--bg2);border:2px solid var(--border);border-radius:var(--rad);padding:32px;max-width:600px;width:100%;max-height:88vh;overflow-y:auto;position:relative;transform:translateY(24px);transition:transform .3s}
+.story-ov.open .story-box{transform:translateY(0)}
+.story-x{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;padding:4px 8px}
+.story-x:hover{color:var(--bright)}
+
+/* ── MATRIX ── */
+#mtx{position:fixed;inset:0;z-index:9800;display:none;background:#000;cursor:pointer}
+#mtx-close{position:fixed;top:20px;right:20px;z-index:9801;background:rgba(0,0,0,.88);border:1px solid #0f0;color:#0f0;font-family:'JetBrains Mono',monospace;padding:7px 16px;cursor:pointer;font-size:12px;display:none;border-radius:4px;letter-spacing:.06em}
+
+/* ── VISIT COUNT ── */
+.visit-count{position:fixed;top:10px;right:14px;z-index:9400;font-size:10px;color:rgba(255,255,255,.28);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+[data-theme="terminal"] .visit-count{display:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  [data-theme="terminal"] .sp,.edex-hdr{display:none!important}
+  [data-theme="terminal"] .page-layout{padding:0;height:100vh}
+  [data-theme="terminal"] .window{flex:1}
+  [data-theme="terminal"] .output{max-height:calc(100vh - 120px)}
+  .page-layout{padding:48px 8px 82px}
+}
+@media(max-width:540px){
+  .output{padding:12px 12px 8px;max-height:64vh}
+  .inputrow{padding:8px 12px 10px}
+  .h-box{padding:22px}
+  .hgrid{grid-template-columns:1fr}
+}
+/* Non-terminal themes: restore normal body layout */
+[data-theme="medieval"] body,[data-theme="web1991"] body,[data-theme="aichat"] body{overflow:auto;height:auto}
+[data-theme="medieval"] .page-layout,[data-theme="web1991"] .page-layout,[data-theme="aichat"] .page-layout{height:auto;padding:60px 12px 100px}
+@media(max-width:900px){
+  [data-theme="medieval"] .page-layout,[data-theme="web1991"] .page-layout,[data-theme="aichat"] .page-layout{padding:48px 8px 82px}
+}
+/* Fade targets */
+.ft-fade{opacity:0;transition:opacity .9s ease}
+.ft-fade.fv{opacity:1}
+#spLeft.ft-fade{transition-delay:.3s}
+#spRight.ft-fade{transition-delay:.6s}
+.edex-hstats{opacity:0;transition:opacity .7s ease .5s}
+.edex-hstats.fv{opacity:1}
+
+/* Mobile globe background */
+#globeBg{display:none;position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);pointer-events:none;
+  z-index:10;opacity:0;transition:opacity 1.4s ease;
+  border-radius:50%}
+[data-theme="terminal"] #globeBg{display:block}
+@media(min-width:901px){#globeBg{display:none!important}}
+
+/* ASCII art mobile scale */
+.ascii-art{overflow-x:auto;display:block}
+@media(max-width:900px){
+  .ascii-art{font-size:5px!important;line-height:1.2!important;letter-spacing:0!important}
+}
+</style>
+</head>
+<body>
+
+<div id="scanlines"></div>
+<div id="vignette"></div>
+<div id="gridlines"></div>
+<div class="visit-count" id="vc-display"></div>
+
+<!-- eDEX HEADER (terminal only) -->
+<div class="edex-hdr" id="edexHdr">
+  <div class="edex-corner tl"></div>
+  <div class="edex-corner tr"></div>
+  <span class="edex-logo">VOID<span>MONK</span> // NEURAL_TERMINAL <span>v3.0</span></span>
+  <div class="edex-hspacer"></div>
+  <div class="edex-hstats">
+    <span class="edex-hs"><b>SYS</b>:ONLINE</span>
+    <span class="edex-hs"><b>ENC</b>:AES-256-GCM</span>
+    <span class="edex-hs"><b>TARGET</b>:<b style="color:var(--text)">NOT FOUND</b></span>
+    <span class="edex-hs" id="vc-edex"></span>
+  </div>
+  <div class="edex-time" id="edexTime">00:00:00</div>
+</div>
+
+<!-- PAGE LAYOUT -->
+<canvas id="globeBg" width="320" height="320"></canvas>
+<div class="page-layout">
+
+  <!-- LEFT PANEL -->
+  <div class="sp sp-left ft-fade" id="spLeft">
+    <div class="sp-sec">GEO // ORIGIN</div>
+    <canvas id="globeCv" width="210" height="210"></canvas>
+    <div class="geo-rows">
+      <div class="geo-row"><span class="geo-k">LAT</span><span class="geo-v">10.7828° N</span></div>
+      <div class="geo-row"><span class="geo-k">LONG</span><span class="geo-v">79.1318° E</span></div>
+      <div class="geo-row"><span class="geo-k">REGION</span><span class="geo-v">TAMIL NADU</span></div>
+    <div class="geo-row"><span class="geo-k">COUNTRY</span><span class="geo-v ok">INDIA</span></div>
+    </div>
+    <div class="sp-sec" style="margin-top:6px">ACTIVE // PROC</div>
+    <div class="proc-list" id="procList"></div>
+    <div class="uptime-bar">UPTIME: <b id="uptimeVal">00:00:00</b></div>
+  </div>
+
+  <!-- CENTER: WINDOW -->
+  <div class="window-wrap">
+    <div class="window" id="wnd">
+  <div class="scroll-rod"><div class="scroll-rod-shine"></div></div>
+  <div class="wax-seal">VM</div>
+  <div class="titlebar">
+        <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="tb-label" id="tb-lbl">voidmonk@portfolio — zsh</span>
+        <div class="tb-r"></div>
+      </div>
+      <div class="output" id="out"></div>
+      <div class="inputrow">
+        <span class="prompt-sym" id="ps">voidmonk@dev:~$</span>
+        <input id="inp" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="type a command… try help">
+      </div>
+    </div><!-- inputrow -->
+      <div class="scroll-rod"><div class="scroll-rod-shine"></div></div>
+    </div><!-- window -->
+
+  <!-- RIGHT PANEL -->
+  <div class="sp sp-right ft-fade" id="spRight">
+    <div class="sp-sec">SYS // METRICS</div>
+    <div class="metric-block">
+      <div class="mb-hdr"><span class="mb-lbl">IDEAS</span><span class="mb-val" id="cpu-val">--</span></div>
+      <canvas class="graph-cv" id="cpuCv" height="38"></canvas>
+    </div>
+    <div class="metric-block">
+      <div class="mb-hdr"><span class="mb-lbl">AI ASSIST</span><span class="mb-val" id="mem-val">--</span></div>
+      <canvas class="graph-cv" id="memCv" height="38"></canvas>
+    </div>
+    <div class="metric-block">
+      <div class="mb-hdr"><span class="mb-lbl">MONEY</span><span class="mb-val" id="net-val">--</span></div>
+      <canvas class="graph-cv" id="netCv" height="38"></canvas>
+    </div>
+    <div class="sp-sec" style="margin-top:4px">SYS // INFO</div>
+    <div class="sys-info">
+      <div class="si-row"><span class="si-k">STACK</span><span class="si-v">FLUTTER/DART</span></div>
+      <div class="si-row"><span class="si-k">ENGINE</span><span class="si-v">UNITY/C#</span></div>
+      <div class="si-row"><span class="si-k">PROJECTS</span><span class="si-v">3 SHIPPED</span></div>
+      <div class="si-row"><span class="si-k">IN LAB</span><span class="si-v">6 BUILDING</span></div>
+      <div class="si-row"><span class="si-k">METHOD</span><span class="si-v ok">AI+SELF</span></div>
+      <div class="si-row"><span class="si-k">STATUS</span><span class="si-v ok">ACTIVE</span></div>
+      <div class="si-row"><span class="si-k">ENCRYPT</span><span class="si-v warn">AES-256-GCM</span></div>
+    </div>
+  </div>
+
+</div><!-- /page-layout -->
+
+<!-- FAB THEME SWITCHER -->
+<div class="fab-wrap" id="fabWrap">
+  <div class="fab-menu" id="fabMenu">
+    <button class="fab-era active" data-era="terminal"><span class="fab-era-ic">⌨</span>terminal</button>
+    <button class="fab-era" data-era="medieval"><span class="fab-era-ic">📜</span>medieval</button>
+    <button class="fab-era" data-era="web1991"><span class="fab-era-ic">🌐</span>1991</button>
+    <button class="fab-era" data-era="aichat"><span class="fab-era-ic">💬</span>ai chat</button>
+    <button class="fab-era" data-era="future"><span class="fab-era-ic">🚀</span>future</button>
+  </div>
+  <button class="fab-btn" id="fabBtn" onclick="toggleFab()" aria-label="Switch theme">⚡</button>
+</div>
+
+<!-- HIRE MODAL -->
+<div class="h-ov" id="h-ov">
+  <div class="h-box">
+    <button class="h-x" onclick="closeHire()">✕</button>
+    <div class="h-title">Request a project</div>
+    <div class="h-sub">Tell me what you need. I'll respond within 24h.</div>
+    <div class="hp" aria-hidden="true" tabindex="-1"><input type="text" id="hp-f" name="website" tabindex="-1" autocomplete="off"></div>
+    <form id="h-form" onsubmit="submitHire(event)" novalidate>
+      <div class="hf"><label class="hl">project type *</label><select class="hsel" id="h-type" required><option value="">— select —</option><option>Mobile App (Flutter)</option><option>Website</option><option>Game</option><option>Game Mod (Minecraft)</option><option>Security / Code Review</option><option>Logo / Art</option><option>Other</option></select></div>
+      <div class="hf"><label class="hl">project name (optional)</label><input class="hi" id="h-name" type="text" placeholder="What should we call it?" maxlength="80"></div>
+      <div class="hf"><label class="hl">description *</label><textarea class="hta" id="h-desc" placeholder="What do you want built?" maxlength="1200" required></textarea></div>
+      <div class="hgrid"><div class="hf"><label class="hl">deadline</label><input class="hi" id="h-dead" type="text" placeholder="e.g. 6 weeks" maxlength="40"></div><div class="hf"><label class="hl">budget *</label><select class="hsel" id="h-budget" required><option value="">— select —</option><option>Under $50</option><option>$50–$200</option><option>$200–$500</option><option>$500+</option><option>Let's discuss</option></select></div></div>
+      <div class="hf"><label class="hl">your email *</label><input class="hi" id="h-email" type="email" placeholder="you@example.com" required maxlength="120"></div>
+      <label class="u-row"><input type="checkbox" id="h-urg"><div><div class="u-title">🚨 Mark as urgent</div><div class="u-desc">I'll be notified immediately.</div></div></label>
+      <div class="h-msg" id="h-msg"></div>
+      <button class="h-submit" type="submit" id="h-btn">Send Request</button>
+    </form>
+  </div>
+</div>
+
+<!-- STORY MODAL -->
+<div class="story-ov" id="story-ov">
+  <div class="story-box">
+    <button class="story-x" onclick="document.getElementById('story-ov').classList.remove('open')">✕</button>
+    <div id="story-content"></div>
+  </div>
+</div>
+
+<canvas id="mtx"></canvas>
+<button id="mtx-close" onclick="stopMatrix()">✕ exit matrix</button>
+
+<!-- MOBILE BAR -->
+<div class="mob" id="mobBar" data-theme-mob="terminal">
+  <button class="mbtn" onclick="run('help')">help</button>
+  <button class="mbtn" onclick="run('about')">about</button>
+  <button class="mbtn" onclick="run('projects')">projects</button>
+  <button class="mbtn" onclick="run('wip')">wip</button>
+  <button class="mbtn" onclick="run('contact')">contact</button>
+  <button class="mbtn" onclick="openHire()">hire</button>
+  <button class="mbtn" onclick="run('clear')">clear</button>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+'use strict';
+
+/* ── CONFIG ── */
+const C={
+  handle:'VoidMonk',
+  name:'Muthu Vignesh S',
+  tagline:'Flutter dev · Unity · AI-accelerated · Security-focused · Self-taught.',
+  email:'vymoirstudio@gmail.com',
+  paypal:'https://paypal.me/YOUR_PAYPAL',
+  ejs_svc:'YOUR_SERVICE_ID',
+  ejs_tpl:'YOUR_TEMPLATE_ID',
+  ejs_key:'YOUR_PUBLIC_KEY',
+  about:[
+    'Self-taught developer and creator. No degree — just curiosity,',
+    'stubbornness, and a lot of hours.',
+    '',
+    'I build with AI as a collaborator — I bring the idea, architecture,',
+    'logic, judgment, and taste. AI brings the speed.',
+    '',
+    'I also design logos in Inkscape and create 2D art in Krita,',
+    'watching tutorials, using AI-assistance, and figuring it out.',
+    '',
+    'I believe there\'s always someone better than you.',
+    'That\'s not discouraging — it\'s true, and it keeps you honest.',
+  ],
+  skills:['Flutter','Dart','Unity','C#','Firebase','DevOps','AES-256-GCM','Argon2id','Security Eng.','QA & Testing','Logo Design','Inkscape','2D Art','Krita','AI-Accelerated Dev','Minecraft Modding','UX/UI','Client Communication'],
+  projects:[
+    {id:'ciphercompass',title:'Cipher Compass',subtitle:'AES-256-GCM vault hidden inside a compass app',status:'live',desc:'Encrypted file vault disguised as "Compass Pro" on your home screen. Triple-factor entry: compass bearing + gesture + PIN. No internet, no cloud, no accounts. Survived 6 AI pen-test sessions with zero known vulnerabilities.',tags:['Flutter','AES-256-GCM','Argon2id','Android','Security'],audits:6,playstore:'https://play.google.com/store/apps/details?id=com.vymoir.ciphercompass',page:'cipher-compass.html'},
+    {id:'bison',title:'Indian Bison Mount',subtitle:'Minecraft Bedrock addon',status:'live',desc:'Custom rideable mob — Indian Bison with unique animations and spawn biomes. Available on CurseForge for Minecraft Bedrock Edition.',tags:['Minecraft Bedrock','Java','Addon'],audits:0,playstore:'',page:'https://www.curseforge.com/minecraft-bedrock/addons/indian-bison-mount'},
+    {id:'dioo',title:'Dioo',subtitle:'First ever game — built in under 9 hours',status:'live',desc:'Built with zero prior Unity knowledge in under 9 hours. Art by a friend. Rough around the edges — and I\'m proud of it for exactly that reason. That\'s where the journey started.',tags:['Unity','Game','Itch.io'],audits:0,playstore:'',page:'https://vymoir.itch.io/dioo'},
+  ],
+  wip:[
+    {title:'Immune System Roguelike',type:'game',desc:'Brotato-style auto-shooter where immune-system heroes fight waves of enemies. Auto-targeting, hero tiers (Normal/Rare/Epic/Ruler), ability systems, upgrade loop, and a material-based shop. Core systems in pre-alpha.',pct:50,tags:['Unity','C#','Roguelike'],note:'Single hero + weapon prototype active. Multi-hero system in design.'},
+    {title:'Dragonfly vs Mosquito',type:'game',desc:'Small arcade game — a dragonfly eating mosquito swarms.',pct:25,tags:['Unity','C#'],note:''},
+    {title:'Project Square',type:'game',desc:'Rage-bait 2D platformer with a twist — the game roasts you mid-play for dying. Core gameplay ready, levels not yet.',pct:35,tags:['Unity','Platformer'],note:'In-game insult system working. Level design next.'},
+    {title:'Ili Pika Park',type:'game',desc:'A cute game built around Ili Pikas — the tiny "magic rabbit" found in Chinese mountains. Very early concept stage.',pct:8,tags:['Flutter','Flame'],note:'Concept stage. Attached to this one.'},
+    {title:'Project Delta',type:'game',desc:'Concept stage — details private for now.',pct:5,tags:[],note:''},
+    {title:'Project Echo',type:'game',desc:'Concept stage — details private for now.',pct:3,tags:[],note:''},
+  ],
+  chatContext:`
+VoidMonk is Muthu Vignesh S, self-taught developer and creator, Tamil Nadu, India.
+Studio Name: Vymoir Studio | Email: vymoirstudio@gmail.com
+No degree. Chose building over certificates — deliberately. 
+
+BACKGROUND:
+Scored 504/600 in 12th std. Was told during college admission, in front of his father, that his marks were "extremely low" and he was "lucky to get a seat." That same college had students admitted with 350s via political recommendations. The system rewarded connections over merit. He saw friends complete BSc Computer Science degrees and not be able to write 9 lines of Python. Degree meant passing exams, not learning. He chose to leave and learn by building instead.
+
+The consequences were real: no traditional job eligibility, family facing social pressure, people who didn't know his name having opinions about his choices. He knew the risks and chose anyway.
+
+His father worked 14+ years carrying 20kg loads to stores, 16-hour days, missing school events and milestones — earning 12,000 rupees a month while the owner built a business worth crores on his early effort, then treated him poorly when he got older. Traditional employment didn't protect someone who gave everything to it. That image is burned into VoidMonk. It's why he builds instead of applies.
+
+HOW HE WORKS:
+Started building seriously March 2025. Didn't know Flutter existed in February 2025.
+Process: Plan → Research (cross-verify across multiple AIs) → Refine structure → Code → Test → Find logical errors → Fix → Enhance.
+Hours in planning before a single line is written. Uses Claude, Gemini, ChatGPT, Grok, Cursor — not blindly, but to cross-verify decisions before committing.
+When AI gives wrong code: he finds the logical error, suggests fixes, they work through it together. He's the architect, AI is the team.
+Can he build without AI? For complex multi-file apps with thousands of lines across multiple languages — not from scratch alone. Neither could most junior devs without documentation, Stack Overflow, or teammates. The tool doesn't diminish the judgment.
+
+CIPHER COMPASS:
+Origin: Was writing game ideas in a notepad — pirate game with a treasure chest that opens only in a specific place and direction. Researched geo-fencing, decided to make it a standalone app. Compass direction became the core unlock mechanism. Researched existing security apps, found most were easily accessible or poorly designed. Made it offline-first. Ran red team audits, AI found vulnerabilities, fixed them, ran 5 more deep audits. Result: AES-256-GCM + Argon2id, industry standard, zero known vulnerabilities.
+Hardest part: learning and building simultaneously. Finishing something and immediately seeing how it should have been done differently. AI context limits across long sessions.
+First version: deleted entirely due to accumulated errors and poor structure. Started fresh. That deletion became the foundation — the mistakes from v1 are why v2 is solid.
+If rebuilt today: same result, 2 months instead of 5. Experience compresses time.
+
+DIOO:
+First ever game. 9 hours. Zero prior Unity knowledge. Watched YouTube, AI guided tools and logic. A friend did the art because he was bored. A 2D platformer. Rough — and proudly so. That's where everything started.
+
+INDIAN BISON MOUNT:
+Minecraft Bedrock addon. Custom rideable Indian Bison mob with animations. On CurseForge.
+
+WIP — 6 projects:
+1. Immune System Roguelike (Unity) — Brotato-style auto-shooter, ~50% on core systems
+2. Dragon vs Mosquito — arcade, inspired by Missile Command
+3. Project Square — rage-bait platformer that roasts you for dying, core done
+4. Ili Pika Park — cute concept, early stage
+5-6. Two more concept-stage games
+
+SKILLS: Flutter, Dart, Unity, C#, Firebase, AES-256-GCM, Argon2id, Security Engineering, Logo Design (Inkscape), 2D Art (Krita), Minecraft Bedrock Modding, DevOps, UX/UI, QA, Client Communication.
+
+HOBBIES & GAMING (From Old Context):
+Obsessive researcher. Draws (above average). Loves animals deeply. Hardcore mobile gamer — 19x Legendary in CODM (BR + MP), 1x top 5,000 global rank, 3x Grandmaster in Honor of Kings. Recently started PUBG.
+
+GENTO EXPERIENCE:
+Customer Service Executive, US healthcare company, 2024, 2.5 months.
+Handled 30+ US clients per night. Preferred quality over quantity — spent real time understanding client needs, explaining properly, not rushing to hand off. Team lead (CEO's wife) pushed for volume over quality. He got 2 clients to return who were ready to leave because of prior bad experiences. The team's coordination process lost them again. He tried. He'd do it the same way again.
+
+COMMUNICATION & LANGUAGES:
+Tamil (native), English (fluent — US client experience), Hindi (conversational), Spanish (learning, 90-day Duolingo streak), Russian (beginner).
+
+HANDLING CRITICISM:
+If it's right — agrees immediately. Nothing to lose admitting a mistake.
+If it's right but delivered badly — fixes the issue, stays polite, mentally notes the gap between how it was delivered and how it should have been.
+If it's factually wrong and personal — moves on, doesn't engage, you've lost his respect quietly.
+He's been on the receiving end of a lot of unfair criticism. He doesn't replicate it.
+
+WEAKNESSES:
+Yelling and aggressive confrontation breaks his focus — he either shuts down or hyperfocuses on improvement, rarely fights back in the moment.
+Flip side: if he's factually and morally right, no amount of authority or pressure changes his position. He'll be polite about it. He won't move.
+Many WIP projects — financial pressure determines priority. What can earn first gets attention first. Nothing is abandoned, just waiting for breathing room.
+
+MOTIVATION:
+To reach financial independence. To give his family — especially his parents — peace of mind they haven't had. To have enough stability to build the things already planned. To learn twice as much in the next year as he did from March 2025 to now.
+
+WORK PREFERENCES:
+Freelance and own projects primarily.
+Would join a company full-time for respect and creative freedom. Both required. If offered those — 12 hours a day, no monitoring needed, work will exceed what was asked.
+Not interested in repetitive, targeted, or assembly-line work. Wants challenging, unique, creative problems.
+
+PERSONALITY:
+Humble about what he doesn't know. Arrogant about what he's actually built.
+Believes there's always someone better — that's not discouraging, it's just true.
+Emotionally driven but professionally disciplined when it counts.
+Doesn't need validation. Does need respect.
+  `
+};
+
+/* ── SECURITY ── */
+const x=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+function rateOk(){try{const K='vm_rl',now=Date.now(),ts=JSON.parse(localStorage.getItem(K)||'[]').filter(t=>now-t<600000);if(ts.length>=3)return false;ts.push(now);localStorage.setItem(K,JSON.stringify(ts));return true}catch{return true}}
+
+/* ── STATE ── */
+let era='terminal';
+const hist=[],OUT=document.getElementById('out');
+let histIdx=-1;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ── OUTPUT HELPERS ── */
+const sd=()=>{OUT.scrollTop=OUT.scrollHeight};
+function node(html,cls=''){
+  if(era==='aichat'&&!cls.includes('echo')){
+    const w=document.createElement('div');w.className='ai-wrap item new '+cls;
+    const av=document.createElement('div');av.className='ai-av';av.textContent='VM';
+    const b=document.createElement('div');b.className='ai-bubble';b.innerHTML=html;
+    w.appendChild(av);w.appendChild(b);OUT.appendChild(w);sd();return w;
+  }
+  const d=document.createElement('div');d.className='item new '+cls;d.innerHTML=html;OUT.appendChild(d);sd();return d;
+}
+function blank(){const d=document.createElement('div');d.className='item gap';d.innerHTML='&nbsp;';OUT.appendChild(d)}
+function sHead(t){const d=document.createElement('div');d.className='sh new';d.textContent=t;OUT.appendChild(d);sd()}
+function echoCmd(cmd){
+  const syms={terminal:'voidmonk@dev:~$',medieval:'✒',web1991:'C:\\>',aichat:'',future:'> CMD://'};
+  const d=document.createElement('div');d.className='echo item new';
+  d.innerHTML=`<span class="echo-sym">${x(syms[era]||'$')}</span><span class="echo-cmd">${x(cmd)}</span>`;
+  OUT.appendChild(d);sd();
+}
+function tags(arr,cls='tg'){return arr.map(t=>`<span class="tag ${cls}">${x(t)}</span>`).join('')}
+function prog(pct){const f=Math.round(pct/5),e=20-f;return`<span style="color:var(--text)">${'█'.repeat(f)}</span><span style="color:var(--border)">${'░'.repeat(e)}</span> <span style="color:var(--accent)">${pct}%</span>`}
+
+/* ── TYPEWRITER ── */
+async function tw(text,color='var(--bright)',speed=22){
+  const d=document.createElement('div');d.className='item';OUT.appendChild(d);
+  for(let i=1;i<=text.length;i++){
+    d.innerHTML=`<span style="color:${color}">${x(text.slice(0,i))}<span class="tw-cur">▋</span></span>`;
+    sd();await sleep(speed);
+  }
+  d.innerHTML=`<span style="color:${color}">${x(text)}</span>`;sd();
+}
+async function twFast(text,color='var(--text2)'){await tw(text,color,10)}
+async function twInstant(text,color='var(--bright)'){
+  const d=document.createElement('div');d.className='item';
+  d.innerHTML=`<span style="color:${color}">${x(text)}</span>`;
+  OUT.appendChild(d);sd();
+}
+
+/* ── ERA CONFIG ── */
+const ERA={
+  terminal:{lbl:'voidmonk@portfolio — zsh',ps:'voidmonk@dev:~$',ph:'type a command… try help',icon:'⌨'},
+  medieval:{lbl:'✦  The Chronicles of VoidMonk  ✦',ps:'✒ Inscribe thy query:',ph:'what dost thou seek, traveller?',icon:'📜'},
+  web1991: {lbl:"VoidMonk's Homepage — Netscape Navigator 4.0",ps:'C:\\>',ph:'enter command and press [ENTER]',icon:'🌐'},
+  aichat:  {lbl:'VoidMonk — Interactive Portfolio',ps:'',ph:'Ask me anything about VoidMonk…',icon:'💬'},
+  future:  {lbl:'VOIDMONK // NEURAL_LINK v2.0 // SECURE',ps:'> CMD://',ph:'INPUT COMMAND SEQUENCE…',icon:'🚀'},
+};
+
+/* ── GLOBE ── */
+let globeAngle=0,globeRaf=null,markerOn=true,worldData=null;
+setInterval(()=>{markerOn=!markerOn},1500);
+
+async function loadWorld(){
+  try{
+    const r=await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    const topo=await r.json();
+    worldData=topojson.feature(topo,topo.objects.countries);
+    console.log('worldData loaded, features:',worldData.features.length);
+  }catch(e){
+    console.error('Globe data FAILED:',e);
+  }
+}
+
+function initGlobe(){
+  const isMobile=window.innerWidth<=900;
+  const cv=document.getElementById(isMobile?'globeBg':'globeCv');
+  if(!cv)return;
+  // Always cancel+reset so re-entry works cleanly
+  cancelAnimationFrame(globeRaf);
+  globeRaf=null;
+  // Size the canvas
+  const size=isMobile?Math.min(window.innerWidth,window.innerHeight)*.85:210;
+  cv.width=size;cv.height=size;
+  if(isMobile){
+    cv.style.width=size+'px';
+    cv.style.height=size+'px';
+  }
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,R=Math.min(W,H)*.42;
+  const TN_LAT=10.79,TN_LON=78.26;
+
+  function project(latDeg,lonDeg,rotRad){
+    const lat=latDeg*Math.PI/180;
+    const lon=lonDeg*Math.PI/180+rotRad;
+    const x=R*Math.cos(lat)*Math.sin(lon);
+    const y=-R*Math.sin(lat);
+    const z=Math.cos(lat)*Math.cos(lon);
+    return{sx:cx+x,sy:cy+y,z};
+  }
+  function projCoord(coord,rot){return project(coord[1],coord[0],rot)}
+
+  function drawLand(rot){
+    if(!worldData)return;
+    ctx.strokeStyle='rgba(57,211,83,.75)';
+    ctx.lineWidth=.85;
+    worldData.features.forEach(feat=>{
+      const geom=feat.geometry;
+      const polys=geom.type==='Polygon'?[geom.coordinates]:
+                  geom.type==='MultiPolygon'?geom.coordinates:[];
+      polys.forEach(poly=>{
+        poly.forEach(ring=>{
+          ctx.beginPath();
+          let started=false,prev=false;
+          ring.forEach(coord=>{
+            const p=projCoord(coord,rot);
+            if(p.z<0){prev=false;return;}
+            if(!started||!prev){ctx.moveTo(p.sx,p.sy);started=true;}
+            else ctx.lineTo(p.sx,p.sy);
+            prev=true;
+          });
+          ctx.stroke();
+        });
+      });
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // Atmosphere
+    const atm=ctx.createRadialGradient(cx,cy,R*.9,cx,cy,R*1.15);
+    atm.addColorStop(0,'rgba(57,211,83,.05)');
+    atm.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(cx,cy,R*1.15,0,Math.PI*2);
+    ctx.fillStyle=atm;ctx.fill();
+    // Sphere
+    const sph=ctx.createRadialGradient(cx-R*.25,cy-R*.25,R*.05,cx,cy,R);
+    sph.addColorStop(0,'rgba(10,28,20,.8)');
+    sph.addColorStop(1,'rgba(0,0,0,.9)');
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.fillStyle=sph;ctx.fill();
+    // Grid
+    ctx.strokeStyle='rgba(57,211,83,.07)';ctx.lineWidth=.5;
+    for(let la=-75;la<=75;la+=30){
+      ctx.beginPath();let mv=true;
+      for(let lo=-180;lo<=180;lo+=3){
+        const p=project(la,lo,globeAngle);
+        if(p.z<0){mv=true;continue;}
+        mv?ctx.moveTo(p.sx,p.sy):ctx.lineTo(p.sx,p.sy);mv=false;
+      }ctx.stroke();
+    }
+    for(let lo=-180;lo<180;lo+=30){
+      ctx.beginPath();let mv=true;
+      for(let la=-90;la<=90;la+=3){
+        const p=project(la,lo,globeAngle);
+        if(p.z<0){mv=true;continue;}
+        mv?ctx.moveTo(p.sx,p.sy):ctx.lineTo(p.sx,p.sy);mv=false;
+      }ctx.stroke();
+    }
+    // Land
+    drawLand(globeAngle);
+    // Equator
+    ctx.strokeStyle='rgba(57,211,83,.22)';ctx.lineWidth=1;
+    ctx.beginPath();let mv2=true;
+    for(let lo=-180;lo<=180;lo+=2){
+      const p=project(0,lo,globeAngle);
+      if(p.z<0){mv2=true;continue;}
+      mv2?ctx.moveTo(p.sx,p.sy):ctx.lineTo(p.sx,p.sy);mv2=false;
+    }ctx.stroke();
+    // Outer ring
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.strokeStyle='rgba(57,211,83,.3)';ctx.lineWidth=1;ctx.stroke();
+    // TN marker
+    const tn=project(TN_LAT,TN_LON,globeAngle);
+    if(tn.z>0){
+      if(markerOn){
+        const pulse=6+2.5*Math.abs(Math.sin(Date.now()/500));
+        ctx.beginPath();ctx.arc(tn.sx,tn.sy,pulse,0,Math.PI*2);
+        ctx.strokeStyle='rgba(239,68,68,.5)';ctx.lineWidth=1;ctx.stroke();
+        ctx.beginPath();ctx.arc(tn.sx,tn.sy,3,0,Math.PI*2);
+        ctx.fillStyle='#ef4444';ctx.fill();
+        ctx.strokeStyle='rgba(239,68,68,.55)';ctx.lineWidth=.8;
+        ctx.beginPath();ctx.moveTo(tn.sx-8,tn.sy);ctx.lineTo(tn.sx+8,tn.sy);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(tn.sx,tn.sy-8);ctx.lineTo(tn.sx,tn.sy+8);ctx.stroke();
+      }else{
+        ctx.beginPath();ctx.arc(tn.sx,tn.sy,2,0,Math.PI*2);
+        ctx.fillStyle='rgba(239,68,68,.2)';ctx.fill();
+      }
+    }
+    globeAngle+=0.005;
+    globeRaf=requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ── GRAPHS ── */
+const GD={
+  ideas:{
+    v:Array(55).fill(0).map(()=>40+Math.random()*50),
+    cur:65,c:'#39d353',id:'cpuCv',lbl:'cpu-val',
+    mode:'ideas'
+  },
+  ai:{
+    v:Array(55).fill(0).map((_,i)=>i<45?30+Math.random()*50:2+Math.random()*8),
+    cur:55,c:'#4ecde6',id:'memCv',lbl:'mem-val',
+    mode:'ai'
+  },
+  money:{
+    v:Array(55).fill(0).map((_,i)=>Math.max(0,70-(i*1.1)+Math.random()*6)),
+    cur:12,c:'#f0a500',id:'netCv',lbl:'net-val',
+    mode:'money'
+  },
+};
+let graphInterval=null;
+function resizeGraphs(){
+  ['cpuCv','memCv','netCv'].forEach(id=>{
+    const cv=document.getElementById(id);
+    if(cv&&cv.parentElement)cv.width=cv.parentElement.offsetWidth-20;
+  });
+}
+function drawGraph(id,data,color){
+  const cv=document.getElementById(id);if(!cv)return;
+  const ctx=cv.getContext('2d');const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  // Grid lines
+  ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=.5;
+  [.25,.5,.75].forEach(y=>{ctx.beginPath();ctx.moveTo(0,y*H);ctx.lineTo(W,y*H);ctx.stroke()});
+  // Fill
+  ctx.beginPath();
+  const step=W/(data.length-1);
+  data.forEach((v,i)=>{const px=i*step,py=H-(v/100)*H;i===0?ctx.moveTo(px,py):ctx.lineTo(px,py)});
+  ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();
+  // Color to rgba for fill
+  const hex=color.replace('#','');
+  const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,`rgba(${r},${g},${b},.28)`);grad.addColorStop(1,`rgba(${r},${g},${b},.03)`);
+  ctx.fillStyle=grad;ctx.fill();
+  // Line
+  ctx.beginPath();
+  data.forEach((v,i)=>{const px=i*step,py=H-(v/100)*H;i===0?ctx.moveTo(px,py):ctx.lineTo(px,py)});
+  ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.stroke();
+  // Current dot
+  const lx=(data.length-1)*step,ly=H-(data[data.length-1]/100)*H;
+  ctx.beginPath();ctx.arc(lx,ly,2.5,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+}
+function updateGraphs(){
+  // IDEAS — erratic, spiky, always high
+  GD.ideas.cur=Math.max(20,Math.min(99,
+    GD.ideas.cur+(Math.random()-.38)*18));
+  // AI ASSIST — good but drops suddenly (power cut / going solo)
+  if(Math.random()<.04) GD.ai.cur=2+Math.random()*10; // sudden drop
+  else GD.ai.cur=Math.max(5,Math.min(92,
+    GD.ai.cur+(Math.random()-.42)*14));
+  // MONEY — slow bleed, flatlines near zero, never recovers
+  GD.money.cur=Math.max(0,Math.min(30,
+    GD.money.cur-(Math.random()*1.1)+(Math.random()*.3)));
+  Object.values(GD).forEach(g=>{
+    g.v.push(g.cur);g.v.shift();
+    drawGraph(g.id,g.v,g.c);
+    const el=document.getElementById(g.lbl);
+    if(el)el.textContent=Math.round(g.cur)+'%';
+  });
+}
+function initGraphs(){
+  if(graphInterval)return;
+  resizeGraphs();updateGraphs();
+  graphInterval=setInterval(updateGraphs,130);
+}
+
+/* ── PROCESSES ── */
+const PROCS=[
+  {name:'flutter_build',base:62},
+  {name:'argon2id_kdf',base:31},
+  {name:'aes_encrypt',base:18},
+  {name:'dev_tools',base:11},
+  {name:'vibes.exe',base:6},
+];
+function initProcs(){
+  const list=document.getElementById('procList');if(!list)return;
+  list.innerHTML='';
+  PROCS.forEach(p=>{
+    const d=document.createElement('div');d.className='proc-item';
+    const pct=Math.max(1,Math.min(99,p.base+Math.round((Math.random()-.5)*12)));
+    d.innerHTML=`<span class="proc-name">${x(p.name)}</span><div class="proc-pct-wrap"><div class="proc-pct-fill" style="width:${pct}%"></div></div><span class="proc-val">${pct}%</span>`;
+    list.appendChild(d);
+  });
+}
+setInterval(initProcs,2200);
+
+/* ── CLOCK & UPTIME ── */
+const startTime=Date.now();
+function pad(n){return String(n).padStart(2,'0')}
+function updateClock(){
+  const now=new Date();
+  const el=document.getElementById('edexTime');
+  if(el)el.textContent=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  const up=Math.floor((Date.now()-startTime)/1000);
+  const h=Math.floor(up/3600),m=Math.floor((up%3600)/60),s=up%60;
+  const uel=document.getElementById('uptimeVal');
+  if(uel)uel.textContent=`${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+setInterval(updateClock,1000);updateClock();
+
+function fadeInPanels(){
+  // Desktop panels
+  document.getElementById('spLeft').classList.add('fv');
+  document.getElementById('spRight').classList.add('fv');
+  document.querySelector('.edex-hstats').classList.add('fv');
+  // Mobile globe background
+  if(window.innerWidth<=900){
+  const bg=document.getElementById('globeBg');
+  if(bg){bg.style.opacity='.16';bg.style.transition='opacity 1.4s ease'}
+}
+  // Input glow pulse
+  const ir=document.querySelector('.inputrow');
+  ir.style.transition='box-shadow .4s ease';
+  ir.style.boxShadow='0 0 18px rgba(57,211,83,.35)';
+  setTimeout(()=>{ir.style.boxShadow='none'},900);
+}
+
+/* ── BOOT SEQUENCES ── */
+const BOOT={
+  async terminal(){
+    const art=[
+      ' ██╗   ██╗ ██████╗ ██╗██████╗ ███╗   ███╗ ██████╗ ███╗   ██╗██╗  ██╗',
+      ' ██║   ██║██╔═══██╗██║██╔══██╗████╗ ████║██╔═══██╗████╗  ██║██║ ██╔╝',
+      ' ██║   ██║██║   ██║██║██║  ██║██╔████╔██║██║   ██║██╔██╗ ██║█████╔╝ ',
+      ' ╚██╗ ██╔╝██║   ██║██║██║  ██║██║╚██╔╝██║██║   ██║██║╚██╗██║██╔═██╗ ',
+      '  ╚████╔╝ ╚██████╔╝██║██████╔╝██║ ╚═╝ ██║╚██████╔╝██║ ╚████║██║  ██╗',
+      '   ╚═══╝   ╚═════╝ ╚═╝╚═════╝ ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝',
+    ];
+    const pre=document.createElement('pre');
+    pre.className='ascii-art';
+    pre.style.cssText='font-size:8.5px;line-height:1.28;color:var(--text);margin-bottom:12px;opacity:.88';
+    pre.textContent=art.join('\n');
+    OUT.appendChild(pre);
+    await sleep(180);
+    await twFast('> IDENTITY .............. MUTHU VIGNESH S','var(--text2)');
+    await sleep(40);
+    await twFast('> OCCUPATION ............ SELF-TAUGHT DEVELOPER','var(--text2)');
+    await sleep(40);
+    await twFast('> METHOD ................ I bring the idea. AI brings the speed.','var(--text2)');
+    await sleep(40);
+    await twFast('> PROJECTS .............. 3 shipped  ·  6 in the lab','var(--text)');
+    await sleep(40);
+    await twFast('> CURRENT STATUS ........ building','var(--text)');
+    await sleep(60);
+    await twInstant('──────────────────────────────────────────────────','var(--text3)');
+    await tw('Flutter · Unity · Security · AI · Self-taught.','var(--bright)',20);
+    await sleep(100);
+    await tw('Type help to explore.','var(--text2)',18);
+    await sleep(400);
+    // Fade everything in
+    fadeInPanels();
+  },
+  medieval(){
+    const h=document.createElement('div');
+    h.style.cssText='text-align:center;padding:12px 0 14px;font-family:"UnifrakturMaguntia",cursive;font-size:42px;color:var(--accent)';
+    h.textContent='VoidMonk';OUT.appendChild(h);
+    const orn=document.createElement('div');
+    orn.style.cssText='text-align:center;color:var(--accent2);margin-bottom:18px;letter-spacing:.25em;font-size:12px';
+    orn.textContent='✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦';OUT.appendChild(orn);
+    node(`<span style="font-style:italic;color:var(--text2)">Hear ye, hear ye — welcome to these digital chronicles.</span>`);
+    blank();
+    node(`<span style="color:var(--bright)">You stand before the works of <strong>${x(C.name)}</strong>, known in these</span>`);
+    node(`<span style="color:var(--bright)">lands as <strong>VoidMonk</strong>. A craftsman forged by fire and trial alone.</span>`);
+    blank();
+    node(`<span style="color:var(--text)">Type <span style="color:var(--accent)">help</span> to begin, or <span style="color:var(--accent)">story</span> for the chronicles.</span>`);
+    blank();
+  },
+  web1991(){
+    node(`<h1 style="font-size:22px;color:#000080;text-align:center;text-decoration:underline;margin-bottom:8px">Welcome to VoidMonk's Home Page!</h1>`);
+    const hr1=document.createElement('hr');OUT.appendChild(hr1);
+    node(`<p style="text-align:center;margin:8px 0"><span class="blink" style="color:red;font-weight:bold">★ NEW ★</span> Cipher Compass is now on Google Play! <a href="cipher-compass.html" target="_blank">Download here!</a></p>`);
+    const hr2=document.createElement('hr');OUT.appendChild(hr2);
+    node(`<p style="margin:6px 0">Best viewed in <b>Netscape Navigator 4.0</b> at 800×600 resolution.</p>`);
+    blank();
+    node(`<p style="margin:6px 0">Hi! I am <b>${x(C.name)}</b>, also known as <b>VoidMonk</b>. I make programs for <i>the World Wide Web</i>, mobile phones, and <i>video games</i>.</p>`);
+    blank();
+    node(`<p style="margin:6px 0"><b>Commands:</b> help &nbsp;|&nbsp; about &nbsp;|&nbsp; projects &nbsp;|&nbsp; wip &nbsp;|&nbsp; contact &nbsp;|&nbsp; clear</p>`);
+    blank();
+    node(`<p style="font-size:12px;color:#555;margin:6px 0"><i>This counter has been visited <b>1,337</b> times since 1996. Sign my <a href="javascript:void(0)" onclick="run('guestbook')">guestbook</a>!</i></p>`);
+    blank();
+  },
+  aichat(){
+    const intro=document.createElement('div');
+    intro.style.cssText='background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:16px';
+    intro.innerHTML=`<div style="font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px">VoidMonk Portfolio AI</div><div style="font-size:13px;color:var(--text2);line-height:1.7">Ask me anything about <strong style="color:var(--bright)">${x(C.name)}</strong> — skills, projects, process, or how to hire him.</div>`;
+    OUT.appendChild(intro);
+    const w=document.createElement('div');w.className='ai-wrap item new';
+    const av=document.createElement('div');av.className='ai-av';av.textContent='VM';
+    const b=document.createElement('div');b.className='ai-bubble';
+    b.innerHTML=`Try: <span style="color:var(--accent);cursor:pointer" onclick="run('about')">about</span> · <span style="color:var(--accent);cursor:pointer" onclick="run('projects')">projects</span> · <span style="color:var(--accent);cursor:pointer" onclick="run('wip')">wip</span> · or ask anything like <em>"what can you build?"</em>`;
+    w.appendChild(av);w.appendChild(b);OUT.appendChild(w);sd();
+  },
+  future(){
+    const lines=[
+      ['> INITIALIZING VOIDMONK NEURAL INTERFACE v2.0…','var(--text2)'],
+      ['> ESTABLISHING QUANTUM SECURE CHANNEL…','var(--text2)'],
+      [`> IDENTITY CONFIRMED: ${C.handle.toUpperCase()} // ${C.name.toUpperCase()}`,'var(--accent)'],
+      ['> CLEARANCE LEVEL: OMEGA-7','var(--text)'],
+      ['> ENCRYPTION SUITE: AES-256-GCM + ARGON2ID ACTIVE','var(--text)'],
+      ['> AI PENETRATION TESTS: 6 / 6  ✓  ✓  ✓  ✓  ✓  ✓','var(--accent2)'],
+      ['> KNOWN VULNERABILITIES: 0','var(--text)'],
+      ['> NET INTERFACE: OFFLINE (intentional)','var(--accent2)'],
+      ['─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─','var(--border)'],
+      ['> SYSTEM READY. AWAITING COMMAND INPUT.','var(--bright)'],
+    ];
+    lines.forEach(([t,c],i)=>setTimeout(()=>node(`<span style="color:${c}">${x(t)}</span>`),i*110));
+    setTimeout(blank,lines.length*110+100);
+  },
+};
+
+/* ── COMMANDS ── */
+const CMDS={
+  help(){
+    blank();
+    node(`<span style="color:var(--accent);font-weight:700">${x(C.handle)}</span><span style="color:var(--text2)"> — command index</span>`);
+    blank();
+    const base=[
+      ['help','show this screen'],['about','who I am + skills'],['projects','shipped apps'],
+      ['wip','work in progress'],['contact','email + links'],['support','coming soon'],
+      ['hire','request a project'],['/view [id]','open project page'],['clear','clear terminal'],
+      ['──────────','────────────────────────────────────────────'],
+    ];
+    const extras={
+      terminal:[['git log','???'],['ping voidmonk','???'],['whoami','???'],['top','???'],['matrix','???'],['hack','???'],['flip','???'],['sudo','???']],
+      medieval:[['story','???'],['quest','???'],['tavern','???'],['dragon','???']],
+      web1991:[['guestbook','???'],['netscape','???'],['clippy','???'],['midi','???']],
+      aichat:[['reviews','AI colleagues review VoidMonk'],['ask anything','AI answers about VoidMonk']],
+      future:[['forecast','???'],['changelog','???'],['timeline','???'],['quantum','???'],['bitcoin','???']],
+    };
+    [...base,...(extras[era]||[])].forEach(([c,d])=>{
+      const el=document.createElement('div');el.className='hrow';
+      el.innerHTML=`<span class="hc">${x(c)}</span><span class="hd">${x(d)}</span>`;
+      OUT.appendChild(el);
+    });
+    blank();
+    node(`<span style="color:var(--text2);font-style:italic;font-size:12px">↑↓ history · Tab autocomplete · konami code · /codename--[name] for secrets</span>`);
+    blank();
+  },
+
+  about(){
+    blank();sHead('about');
+    node(`<span style="color:var(--bright);font-size:15px;font-weight:700">${x(C.name)}</span> <span style="color:var(--text2)">aka</span> <span style="color:var(--text);font-weight:700;font-size:15px">${x(C.handle)}</span>`);
+    blank();
+    C.about.forEach(l=>l===''?blank():node(`<span style="color:var(--bright)">${x(l)}</span>`));
+    blank();sHead('skills');
+    const sk=document.createElement('div');sk.style.margin='4px 0 8px';sk.innerHTML=tags(C.skills);OUT.appendChild(sk);
+    blank();sHead('security highlight');
+    const sec=document.createElement('div');sec.style.margin='4px 0 8px';
+    sec.innerHTML='<span class="audit">✓ AES-256-GCM</span><span class="audit">✓ Argon2id KDF</span><span class="audit">✓ 6 AI pen-test sessions</span><span class="audit">✓ 0 known vulns</span>';
+    OUT.appendChild(sec);blank();
+  },
+
+  projects(){
+    blank();sHead('shipped projects');
+    C.projects.forEach(p=>{
+      const card=document.createElement('div');card.className='card new';
+      let lnks='';
+      if(p.playstore)lnks+=`<a href="${x(p.playstore)}" target="_blank" rel="noopener" style="border-bottom:none">▶ Play Store</a>`;
+      if(p.page&&p.page.startsWith('http'))lnks+=`<a href="${x(p.page)}" target="_blank" rel="noopener" style="border-bottom:none">↗ View</a>`;
+      else if(p.page)lnks+=`<button onclick="window.open('${x(p.page)}','_blank')" style="background:var(--accent);color:#000;border:none;border-radius:5px;padding:4px 14px;font-family:var(--fn);font-size:11px;cursor:pointer;font-weight:700">View Page ↗</button>`;
+      card.innerHTML=`<div class="ct">${x(p.title)}</div><div style="font-size:10.5px;margin-bottom:5px;color:var(--text2)">${x(p.subtitle)}</div><div class="cd">${x(p.desc)}</div><div style="margin-bottom:6px">${tags(p.tags)}</div>${p.audits?`<span class="audit">✓ ${p.audits}× AI pen-test sessions</span>`:''}<div class="clinks">${lnks}</div>`;
+      OUT.appendChild(card);
+    });
+    blank();node(`<span style="color:var(--text2);font-size:12px;font-style:italic">type <span style="color:var(--accent)">wip</span> to see what's cooking</span>`);blank();
+    node(`<span style="color:var(--text3);font-size:11px;font-style:italic">💬 curious about the person behind the code? switch to <span style="color:var(--accent);cursor:pointer" onclick="setEra('aichat')">ai chat</span> and ask anything.</span>`);
+blank();
+  },
+
+  wip(){
+    blank();sHead('work in progress');
+    node(`<span style="color:var(--text2)">Not abandoned. Just cooking. ADHD is a feature.</span>`);blank();
+    C.wip.forEach(p=>{
+      const card=document.createElement('div');card.className='card new';
+      card.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px"><div class="ct">${x(p.title)}</div><span class="tag tc">${x(p.type)}</span></div><div class="cd" style="margin-top:5px">${x(p.desc)}</div><div class="pg-wrap">progress  ${prog(p.pct)}</div><div>${tags(p.tags)}</div>${p.note?`<div style="font-size:11px;color:var(--text2);font-style:italic;margin-top:5px">${x(p.note)}</div>`:''}`;
+      OUT.appendChild(card);
+    });
+    blank();node(`<span style="color:var(--text2);font-style:italic;font-size:12px">${C.wip.length} things in the lab. ships when it ships.</span>`);blank();
+  },
+
+  contact(){
+    blank();sHead('contact');
+    const d=document.createElement('div');d.className='crow';
+    d.innerHTML=`<span class="ci">✉</span><span style="color:var(--text2);width:72px;display:inline-block;flex-shrink:0">Email</span><a href="mailto:${x(C.email)}">${x(C.email)}</a>`;
+    OUT.appendChild(d);blank();
+    node(`<span style="color:var(--text2)">Open to freelance, collabs, and interesting problems.</span>`);
+    node(`<span style="color:var(--text2);font-size:12px;font-style:italic">Usually within 24h · Studio: Vymoir Studio · Tamil Nadu, India</span>`);
+    blank();
+  },
+
+ support(){
+  blank();
+  node(`<span style="color:var(--text2)">Support page coming soon.</span>`);
+  blank();
+},
+
+  hire(){openHire()},
+  clear(){OUT.innerHTML='';const boot=BOOT[era];if(boot instanceof Function||typeof boot==='function'){const r=boot.call(BOOT);if(r&&typeof r.catch==='function')r.catch(()=>{})}},
+
+  /* ── TERMINAL EASTER EGGS ── */
+  'git log'(){
+    blank();
+    const commits=[
+      ['f3a9c12','feat: add paranoid mode (128MB argon2id because why not)'],
+      ['b22e841','fix: compass needle pointing wrong direction. classic.'],
+      ['9f1d3a7','feat: AES-256-GCM working. celebrated for 3 minutes.'],
+      ['c8b4e90','chore: remove 47 console.log statements. dont judge me'],
+      ['12a3f85','fix: app named SecretVault in repo. renamed to CompassPro'],
+      ['7d92c11','feat: biometric auth. asked AI 12 times. finally works'],
+      ['3e8f140','wip: minecraft bison mod (yes, wrong repo, dont care)'],
+      ['a441f92','BREAKING: forgot to zero key bytes after use. fixed asap'],
+      ['d881c09','feat: dioo game. 9 hours. zero sleep. zero unity knowledge'],
+      ['0c9b238','feat: initial commit — "it\'s just an app bro"'],
+    ];
+    node(`<span style="color:var(--text2)">commit log — voidmonk/all-projects</span>`);blank();
+    commits.forEach(([h,m])=>node(`<span style="color:var(--accent)">${h}</span><span style="color:var(--text2)"> — </span><span style="color:var(--bright)">${x(m)}</span>`));
+    blank();
+  },
+
+  ping(){
+    blank();
+    const msgs=[
+      '> PING voidmonk.dev (voidmonk@portfolio)',
+      '> 64 bytes from voidmonk: icmp_seq=1 ttl=64 time=12ms',
+      '> 64 bytes from voidmonk: icmp_seq=2 ttl=64 time=9ms',
+      '> 64 bytes from voidmonk: icmp_seq=3 ttl=64 time=11ms',
+      '',
+      '> 3 packets transmitted, 3 received, 0% packet loss',
+      '> avg response: 10.67ms — developer is alive and building',
+    ];
+    msgs.forEach((m,i)=>setTimeout(()=>{if(m)node(`<span style="color:${i>4?'var(--text)':'var(--text2)'}">${x(m)}</span>`)},i*200));
+    setTimeout(blank,msgs.length*200+100);
+  },
+
+  whoami(){
+    blank();
+    node(`<span style="color:var(--text)">you are: visitor</span>`);
+    node(`<span style="color:var(--text2)">access level: curious</span>`);
+    node(`<span style="color:var(--text2)">clearance: public</span>`);
+    node(`<span style="color:var(--text2);font-size:11px;font-style:italic">tip: some commands only exist in specific themes</span>`);
+    blank();
+  },
+
+  top(){
+    blank();
+    [['PID','CPU%','MEM','COMMAND'],
+     ['─────','─────','──────','──────────────────────────'],
+     ['1337','92.3','620MB','flutter build --release'],
+     ['420', '31.1','180MB','argon2id_kdf --paranoid'],
+     ['69',  '18.7','92MB', 'vibes.exe --productivity=max'],
+     ['1',   '4.2', '22MB', 'coffee_daemon'],
+     ['404', '0.1', '8MB',  'sleep --until=midnight'],
+    ].forEach(([p,c,m,cmd])=>node(`<span style="color:var(--accent)">${p.padEnd(5)}</span><span style="color:var(--text2)">${c.padEnd(6)}</span><span style="color:var(--text2)">${m.padEnd(8)}</span><span style="color:var(--bright)">${x(cmd)}</span>`));
+    blank();
+  },
+
+  /* ── MEDIEVAL ── */
+  story(){
+    const content=`<div style="font-family:'UnifrakturMaguntia',cursive;font-size:32px;color:var(--accent);text-align:center;margin-bottom:16px">The Chronicles of VoidMonk</div><div style="font-size:11px;text-align:center;color:var(--text2);margin-bottom:20px;letter-spacing:.2em">✦ Chapter One: The Vow ✦</div><p style="color:var(--bright);line-height:1.9;font-size:14px;margin-bottom:14px;font-style:italic">[COMING SOON — The lore is being written]</p><p style="color:var(--text2);font-size:13px;line-height:1.8">The story of VoidMonk — a craftsman who abandoned the halls of formal learning to forge his craft in solitude, who built an unbreakable vault not because he was asked to, but because he needed one — is being inscribed into the chronicles.</p><p style="color:var(--text2);font-size:13px;line-height:1.8;margin-top:12px">Return soon, traveller. The tale grows.</p><p style="color:var(--accent2);font-size:11px;font-style:italic;margin-top:20px;text-align:center">This story ties to an upcoming game. Watch this scroll.</p>`;
+    document.getElementById('story-content').innerHTML=content;
+    document.getElementById('story-ov').classList.add('open');
+    blank();node(`<span style="color:var(--text)">[Chronicles opened in a new scroll]</span>`);blank();
+  },
+  quest(){
+    blank();
+    node(`<span style="color:var(--accent);font-weight:700;font-size:14px">⚔ A Quest Has Appeared</span>`);blank();
+    node(`<span style="color:var(--bright)">Seeking: a craftsman of digital arts for an urgent commission.</span>`);
+    node(`<span style="color:var(--bright)">Reward: fair coin, and the satisfaction of a thing built well.</span>`);
+    node(`<span style="color:var(--bright)">Contact: vymoirstudio@gmail.com</span>`);blank();
+    node(`<span style="color:var(--text2);font-style:italic">Type <span style="color:var(--accent)">hire</span> to engage the monk directly.</span>`);blank();
+  },
+  tavern(){
+    blank();
+    node(`<span style="color:var(--accent);font-weight:700">🍺 The Rusty Cursor Tavern</span>`);blank();
+    node(`<span style="color:var(--text2)">Today's menu:</span>`);
+    [['🍖','Grilled Printf','Compiled fresh, served hot'],['🍺','Dark Mode Ale','Best enjoyed after midnight'],['🥗','Raw SQL Salad','Unescaped and dangerous'],['☕','Recursive Coffee','Refills itself until you stop it'],['🍰','404 Not Cake','It was never here']].forEach(([e,n,d])=>node(`<span style="color:var(--bright)">${e} ${x(n)}</span><span style="color:var(--text2)"> — ${x(d)}</span>`));
+    blank();node(`<span style="color:var(--text2);font-style:italic">"We accept no cloud payments here."</span>`);blank();
+  },
+  dragon(){
+    blank();
+    node(`<span style="color:var(--accent);font-weight:700">🐉 Lore Entry: The AES Cipher Beast</span>`);blank();
+    node(`<span style="color:var(--bright)">In the deep vaults beneath Cipher Compass lies a guardian</span>`);
+    node(`<span style="color:var(--bright)">of 256 keys, each a strand of fire no mortal can unweave.</span>`);blank();
+    node(`<span style="color:var(--text2)">Six knights of the red team came to slay it.</span>`);
+    node(`<span style="color:var(--text2)">Six returned — no vulnerabilities found. Armour singed.</span>`);blank();
+    node(`<span style="color:var(--text2);font-style:italic">The beast feeds on Argon2id and sleeps in hardware keystore.</span>`);blank();
+  },
+
+  /* ── 1991 ── */
+  guestbook(){
+    blank();
+    node(`<h2 style="color:#000080;text-decoration:underline;margin-bottom:8px">📖 VoidMonk's Guestbook</h2>`);
+    [['webmaster_pro','cool page!! love the blinking text!! added to bookmarks'],['xXx_hacker_xXx','this encryption thing is a hoax. trust me im a hacker'],['geocities_fan','wow better than my angelfire page!! visit mine!! [link broken]'],['AOLuser1996','i dont understand computers but i like the compass picture'],['CoolDude99','first!!!!!!! great page webmaster keep it up!!!']].forEach(([n,m])=>{
+      node(`<div style="border:1px solid #808080;padding:6px 8px;margin:4px 0;background:#f0f0f0"><b style="color:#000080">${x(n)}</b> writes:<br><i style="color:#333">"${x(m)}"</i></div>`);
+    });
+    blank();node(`<p style="color:#555;font-size:12px;font-style:italic">Sign the guestbook! (coming soon™ — since 1997)</p>`);blank();
+  },
+  netscape(){
+    blank();
+    node(`<div style="border:2px solid #808080;padding:10px;background:#dfdfdf;color:#000;font-family:'Times New Roman',serif"><b>⚠ Browser Compatibility Warning</b><br><br>This page uses advanced HTML 3.2 features. For optimal viewing, please use Netscape Navigator 4.0 or higher.<br><br>Internet Explorer 4.0 users: some features may not work correctly.<br><br><button style="border:2px outset #fff;background:#dfdfdf;padding:4px 12px;cursor:pointer">OK</button></div>`);
+    blank();
+  },
+  clippy(){
+    blank();
+    node(`<div style="border:2px solid #808080;padding:12px;background:#ffffe0;color:#000;font-family:'Times New Roman',serif;max-width:300px"><b>📎 It looks like you're browsing a portfolio!</b><br><br>Would you like help with:<br>• Writing a letter to a potential employer?<br>• Making a bulleted list of your skills?<br>• Setting your homepage to MSN.com?<br><br><button style="border:2px outset #fff;background:#dfdfdf;padding:3px 10px;cursor:pointer" onclick="this.closest('.item').remove()">No thanks, Clippy</button></div>`);
+    blank();
+  },
+  midi(){
+    blank();
+    node(`<p style="color:#555;margin:4px 0">🎵 <i>Background MIDI: "All Star" by Smash Mouth (looping)</i></p>`);
+    node(`<p style="color:#555;margin:4px 0;font-size:12px">Requires Windows Media Player plugin for Netscape.</p>`);
+    node(`<p style="color:#555;margin:4px 0;font-size:12px">If no music: check speakers and ensure dial-up is stable.</p>`);
+    blank();
+  },
+
+  /* ── FUTURE ── */
+  forecast(){
+    blank();
+    node(`<span style="color:var(--text2);font-family:var(--fd);font-size:9px;letter-spacing:.12em">// NEWS FEED: 2087-03-19 // QUANTUM_DECRYPT_ENABLED</span>`);blank();
+    [['[2087]','AES-256 still unbroken. Quantum computers tried. Failed.'],['[2087]','Cipher Compass v47.2 patches vulnerability in Mars colony build.'],['[2083]','VoidMonk retires. AI continues shipping updates autonomously.'],['[2079]','Indian Bison Mount Mod wins the Jupiter Gaming Awards.'],['[2075]','Vymoir Studio acquired by unnamed AI conglomerate. VoidMonk declines.'],['[2071]','First Minecraft world established on the Moon. Mod support confirmed.']].forEach(([d,h])=>node(`<span style="color:var(--text2)">${d}</span> <span style="color:var(--bright)">${x(h)}</span>`));
+    blank();
+  },
+  changelog(){
+    blank();
+    node(`<span style="color:var(--accent);font-family:var(--fd);font-size:9px;letter-spacing:.12em">VOIDMONK SYSTEMS // CHANGELOG // BUILD INFINITY</span>`);blank();
+    [['v∞.0','Added consciousness support. Rolled back — too many edge cases.'],['v99.1','Merged timeline branch. Minor conflicts with alternate universe.'],['v42.0','Removed all bugs. Added new, more interesting bugs.'],['v12.4','Deprecated humans. Re-added after user feedback.'],['v3.1','AES-256 cracked by quantum computer. Re-encrypted with feelings.'],['v1.0','Initial commit — "it\'s just an app bro"']].forEach(([v,n])=>node(`<span style="color:var(--accent)">${v}</span><span style="color:var(--text2)"> — </span><span style="color:var(--bright)">${x(n)}</span>`));
+    blank();
+  },
+  timeline(){
+    blank();
+    node(`<span style="color:var(--text);font-family:var(--fd);font-size:9px;letter-spacing:.12em">VOIDMONK // CAREER TIMELINE PROJECTION</span>`);blank();
+    [['2026','Cipher Compass ships publicly. 0 vulnerabilities found.'],['2027','First paid freelance client. Buys a mechanical keyboard.'],['2028','Indian Bison Mod reaches 1M downloads on CurseForge.'],['2030','Vymoir Studio has 2 employees: VoidMonk and an AI named Tuesday.'],['2035','Speaks at DEFCON about Argon2id implementations.'],['2040','Retires to build games full time. Still uses Flutter.'],['2087','In the changelog.']].forEach(([y,e])=>node(`<span style="color:var(--accent)">${y}</span><span style="color:var(--text2)"> // </span><span style="color:var(--bright)">${x(e)}</span>`));
+    blank();
+  },
+  quantum(){
+    blank();
+    node(`<span style="color:var(--accent2);font-family:var(--fd);font-size:9px;letter-spacing:.12em">QUANTUM STATUS REPORT // 2087</span>`);blank();
+    node(`<span style="color:var(--bright)">AES-256-GCM: UNBROKEN</span>`);
+    node(`<span style="color:var(--text2)">Grover's algorithm reduces effective key to 128 bits. Still infeasible.</span>`);blank();
+    node(`<span style="color:var(--accent2)">Argon2id: UNBROKEN</span>`);
+    node(`<span style="color:var(--text2)">Memory-hardness holds. Quantum speedup does not apply to RAM requirements.</span>`);blank();
+    node(`<span style="color:var(--text);font-style:italic">The vault built in 2026 still holds in 2087.</span>`);blank();
+  },
+  bitcoin(){
+    blank();
+    node(`<span style="color:var(--accent)">₿ BTC/UGC exchange — 2087</span>`);blank();
+    node(`<span style="color:var(--bright)">1 BTC = 847,293,041 UGC</span>`);
+    node(`<span style="color:var(--text2)">You should have bought in 2026. You were right there.</span>`);blank();
+  },
+
+  /* ── AI REVIEWS ── */
+  reviews(){
+    blank();sHead('AI colleagues review VoidMonk');
+    node(`<span style="color:var(--text2);font-style:italic">Actual AI tools he's worked with. The reviews are real. The names are accurate.</span>`);blank();
+    const reviews=[
+      {who:'GPT-4o',score:'★★★★★',review:'Working with VoidMonk is efficient and iterative. He has a clear architecture in mind before asking questions — which is rare. The vault encryption project was technically demanding and he caught two logic errors in my suggested implementations. Highly collaborative.'},
+      {who:'Gemini 2.0 Flash',score:'★★★★★',review:'[PLACEHOLDER — paste your real Gemini review here]'},
+      {who:'Claude (Sonnet)',score:'★★★★★',review:'[PLACEHOLDER — paste your real Claude review here]'},
+      {who:'GitHub Copilot',score:'★★★★☆',review:'[PLACEHOLDER — paste your real Copilot review here]'},
+    ];
+    reviews.forEach(r=>{
+      const card=document.createElement('div');card.className='card new';
+      card.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div class="ct">${x(r.who)}</div><span style="color:var(--accent)">${x(r.score)}</span></div><div class="cd">${x(r.review)}</div>`;
+      OUT.appendChild(card);
+    });
+    blank();node(`<span style="color:var(--text2);font-size:11px;font-style:italic">Reviews from actual working sessions.</span>`);blank();
+  },
+};
+
+/* ── AI Q&A ── */
+const QA=[
+  // IDENTITY
+  {k:['who are you','introduce','tell me about','about yourself','who is voidmonk'],
+   a:`VoidMonk is Muthu Vignesh S — self-taught developer and creator from Tamil Nadu, India. No degree, no team, no funding. Started building seriously in March 2025. In that time: shipped Cipher Compass (an AES-256-GCM encrypted vault, 6 red team audits, zero vulnerabilities), a Minecraft Bedrock addon, and his first game built in 9 hours with zero prior Unity knowledge. Six more projects in progress. He builds with AI as a collaborator — brings the idea, architecture, logic, and judgment. AI brings speed.`},
+
+  // DEGREE
+  {k:['no degree','without degree','drop out','dropout','college','university','education','qualify','qualified'],
+   a:`He left college deliberately. Scored 504/600 in his 12th std — was told during admission, in front of his father, that his marks were "too low" and he was "lucky to get a seat." That same college admitted students with scores in the 300s via political recommendations. He watched friends complete BSc Computer Science degrees and be unable to write 9 lines of Python. A degree from that system meant passing exams, not learning. He chose building instead. The consequence was social and financial pressure — which continues. He knew that going in. The work is the answer to the question.`},
+
+  // HIRE WITHOUT DEGREE
+  {k:['why hire','why should i hire','why you','what makes you','over someone with'],
+   a:`Look at what exists. Cipher Compass — a full offline encrypted vault with triple-factor authentication, hardware-bound keys, cryptographic deletion, AES-256-GCM, Argon2id — built by someone who didn't know what Flutter was in February 2025. According to every AI model he stress-tested it with, it would take a team to build this. He was the team. If you still think someone with a degree is automatically a better hire — a degree is a certificate that someone attended classes. This portfolio is evidence of what gets built. Those are different things.`},
+
+  // AI BUILDING
+  {k:['just use ai','only ai','ai generated','not real skill','ai generated','vibe cod'],
+   a:`The process: plan → research → cross-verify across multiple AIs → refine structure → write code → test → find logical errors → fix → enhance. Hours in planning before a single line is written. He uses Claude, Gemini, ChatGPT, Grok, and Cursor — not interchangeably, but to cross-verify decisions before committing. When AI gives wrong code, he finds the logical error, suggests fixes, and they work through it. He's the architect. AI is the team. The judgment, the taste, the quality bar — that's all him. You can tell because the output is coherent across thousands of lines and multiple sessions.`},
+
+  // CAN YOU WORK WITHOUT AI
+  {k:['without ai','no ai','can you code','coding yourself','from scratch'],
+   a:`For complex multi-file apps with thousands of lines across multiple languages — not entirely from scratch alone. He's honest about that. Neither could most junior developers without documentation, Stack Overflow, senior teammates, or frameworks built by others. The question isn't whether AI is involved — it's whether the person using it has the judgment to direct it, catch its mistakes, and produce something that works. The answer to that is Cipher Compass.`},
+
+  // HOW YOU BUILD
+  {k:['how do you build','process','workflow','how do you work','methodology','approach'],
+   a:`Plan first — sometimes hours before any code. Research the plan, find known problems, find solutions for them in advance. Cross-verify AI suggestions across multiple models. Write a clean structure. Code section by section, test each piece, fix logical errors as they appear. Then enhance. The early projects were chaotic — build, break, fix. Now it's almost the opposite: most problems are solved on paper before they exist in code.`},
+
+  // CIPHER COMPASS
+  {k:['cipher compass','vault','compass app','encryption app','your app','main project'],
+   a:`Started from a game idea — a pirate game where a treasure chest opens only at a specific place and direction. Researched geo-fencing, decided to build a standalone app instead. Compass direction became the vault unlock mechanism. Researched existing security apps — most were easily bypassed or poorly built. Built it offline-first. Ran red team audits, AI found vulnerabilities, fixed them, ran five more deep audits. Result: AES-256-GCM encryption, Argon2id key derivation, hardware-bound keys, cryptographic deletion, zero network access, zero known vulnerabilities. Currently in closed testing on Google Play.`},
+
+  // HARDEST PART
+  {k:['hardest','difficult','challenge','struggle','toughest'],
+   a:`Learning and building at the same time. Finishing something and immediately seeing how it should have been done differently — that's the hardest loop to be in. Also AI context limits across long sessions. And the first version of Cipher Compass was deleted entirely because the errors had compounded beyond fixing. Starting over from scratch was painful and became the best thing that happened to the project.`},
+
+  // FAILURE
+  {k:['failure','failed','mistake','what went wrong','biggest failure'],
+   a:`The first version of Cipher Compass. Deleted entirely — accumulated errors, poor structure, no clean foundation. Took the lessons, started fresh, built what exists now. So it wasn't really a failure, it was the necessary version. The actual step backward that made the step forward possible. Outside of code — trusted people with ideas early on and learned that belief has to be earned, not assumed. Built alone since.`},
+
+  // DIOO
+  {k:['dioo','first game','first project','9 hours','nine hours','itch.io'],
+   a:`Built in under 9 hours with zero prior Unity knowledge. Watched YouTube tutorials, AI guided tools and logic, a friend did the art because he had nothing else to do. A simple 2D platformer. Rough around the edges — intentionally kept that way as a marker of where it started. That's the first thing he ever shipped. Available on itch.io.`},
+
+  // GENTO / COMMUNICATION
+  {k:['gento','customer service','us clients','communication','work experience','professional experience'],
+   a:`Worked as Customer Service Executive at Gento, a US healthcare company, in 2024 — 2.5 months handling 30+ US clients per night. Preferred quality over volume: spent real time understanding what clients needed, explained things properly, didn't rush to hand off. Got two clients to return who were ready to leave permanently due to prior bad experiences with the company. Team lead wanted speed over quality. He'd make the same choice again. Comfortable working professionally in English across time zones.`},
+
+  // CRITICISM
+  {k:['criticism','feedback','handle feedback','told you\'re wrong','critique','someone disagrees'],
+   a:`If it's right — agrees immediately. Nothing to lose admitting a mistake. If it's right but delivered badly — fixes the issue, stays professional, quietly notes the gap. If it's factually wrong and personal — moves on. Doesn't engage, doesn't retaliate, doesn't forget. He's been on the receiving end of a lot of unfair criticism from people who didn't know him. He doesn't replicate it.`},
+
+  // TEAM EXPERIENCE
+  {k:['team','collaborate','work with others','teammates','group'],
+   a:`His team has been Claude, Gemini, ChatGPT, Grok, and Cursor — cross-verifying decisions, catching each other's mistakes, building in parallel. Human collaboration hasn't happened yet — not from lack of wanting, but because nobody in his immediate world believed enough in what he was building early enough. He'd welcome the right team. He knows how to direct one.`},
+
+  // WEAKNESSES
+  {k:['weakness','weaknesses','what can\'t you do','limitations','shortcomings'],
+   a:`Aggressive confrontation and yelling breaks his focus. He either shuts down or hyperfocuses on fixing the thing being criticised — rarely fights back in the moment. That's a real limitation in high-pressure environments. The flip side: if he's factually right, no amount of authority changes his position. He'll be polite about it. He won't move. Also: many projects in progress simultaneously — financial pressure currently determines what gets finished first.`},
+
+  // WIP / UNFINISHED
+  {k:['unfinished','so many projects','wip','work in progress','why not finished','incomplete'],
+   a:`Financial pressure determines priority right now. What can generate income fastest gets attention first. Nothing in the lab is abandoned — they're all actively thought about. The Immune System Roguelike is the biggest one, about 50% on core systems. Project Square's core is done. The others are waiting for breathing room. ADHD probably has something to do with the volume of ideas. The discipline is in what gets shipped.`},
+
+  // MOTIVATION
+  {k:['motivation','motivates you','why do you build','what drives you','why keep going'],
+   a:`Someone close to him spent over 14 years in physical labour — long hours, heavy loads, missing important moments — earning barely enough to live on while the person he built that business for grew wealthy and eventually treated him poorly. Traditional employment, done right, with total commitment, didn't protect him. That image doesn't leave. The goal is to build something that does — financial independence, creative control, and eventually enough stability to give his family the peace they haven't had. That's what this is for.`},
+
+  // AMBITION / FUTURE
+  {k:['future','3 years','five years','where do you see','goals','ambition','plans'],
+   a:`Financially independent. Enough to build what's already planned without stopping to worry about survival. Enough to give his family peace of mind. Twice as much learned and built in the next year as the year that went from March 2025 to now. Specific projects already exist in concept — they need funding and time, not more ideas.`},
+
+  // FREELANCE VS FULL TIME
+  {k:['freelance','full time','job','employment','hire full time','work for company'],
+   a:`Freelance and own projects primarily. Would join a company full-time for two things: respect and creative freedom. Both required — not negotiable. If those exist, 12 hours a day, no monitoring needed, work will exceed what was asked. Not interested in repetitive, assembly-line, or purely targeted work. Wants problems that haven't been solved the same way before.`},
+
+  // WHAT EXCITES
+  {k:['excites','interests','what do you like','what kind of work','passionate'],
+   a:`Challenging, unique, creative problems. Anything that hasn't been done exactly this way before. Security engineering, game mechanics, tools that feel invisible when they work. Not repetitive builds or templated work. The best projects are the ones where the problem itself is interesting — the solution follows naturally.`},
+
+  // SKILLS
+  {k:['skill','skills','what can you do','tech stack','technologies','languages'],
+   a:`Flutter, Dart, Unity, C#, Firebase, DevOps, AES-256-GCM, Argon2id, Security Engineering, Logo Design (Inkscape), 2D Art (Krita), Minecraft Bedrock Modding, UX/UI, QA & Testing, Client Communication. Flexible across disciplines — plans, researches, designs, builds, tests, deploys. Not a specialist in one lane.`},
+
+  // PROJECTS LIST
+  {k:['projects','what have you built','portfolio','shipped','what did you make','bison','minecraft','curseforge'],
+   a:`3 shipped: Cipher Compass (encrypted vault app, Google Play), Indian Bison Mount (Minecraft Bedrock addon with custom animations on CurseForge), Dioo (first game, itch.io). 6 in progress: Immune System Roguelike, Dragon vs Mosquito, Project Square, Ili Pika Park, and 2 concept-stage games. Type 'projects' or 'wip' to see details.`},
+
+  // GAMING & HOBBIES (From Old QA)
+  {k:['game','codm','pubg','honor','cod','legends','hobby','research','animals'],
+   a:`Hardcore mobile gamer. 19× Legendary in CODM (both BR and MP), 1× top 5,000 global rank. 3× Grandmaster in Honor of Kings. Recently started PUBG. He's an obsessive researcher, draws (above average), and loves animals deeply.`},
+
+  // LOGO / ART (From Old QA)
+  {k:['logo','art','inkscape','krita','design','draw'],
+   a:`He designs logos in Inkscape and creates 2D art in Krita. Watched tutorials, used AI as reference and guide, figured it out. The Cipher Compass icon was made this way.`},
+
+  // SECURITY (From Old QA)
+  {k:['security','pentest','audit','red team','vulnerability','aes','argon'],
+   a:`Cipher Compass: AES-256-GCM vault + Argon2id key derivation. 6 AI-assisted pen-test sessions using multiple models and methodologies. Zero known vulnerabilities. No internet, no cloud, no accounts.`},
+
+  // CONTACT / HIRE
+  {k:['contact','hire','email','reach','work together','get in touch','paypal','support'],
+   a:`Email: vymoirstudio@gmail.com — usually responds within 24 hours. Or type 'hire' here. Studio: Vymoir Studio. For PayPal/donations, type 'support'. Only if you want to. Zero pressure.`},
+
+  // GREETINGS
+  {k:['hello','hi','hey','sup','yo','good morning','good evening'],
+   a:`Hey — you're talking to VoidMonk's AI. Ask anything about his work, process, projects, or what it's like to hire him. Or type 'help' for commands.`},
+
+  {k:['thank','thanks','appreciate','that helps','great answer'],
+   a:`Glad that helped. Ask anything else — no question is too specific.`},
+];
+function aiAnswer(input){
+  const low=input.toLowerCase();
+  for(const qa of QA){if(qa.k.some(k=>low.includes(k))){blank();node(`<span style="color:var(--bright)">${x(qa.a)}</span>`);blank();return}}
+  blank();node(`<span style="color:var(--bright)">I can answer questions about VoidMonk's skills, projects, process, or how to hire him. Or type <span style="color:var(--accent)">help</span>.</span>`);blank();
+}
+
+/* ── CODENAMES ── */
+const CODES={
+  'kumaresan':'Lai ennala website check panna sonnen a illana yaartayum kaati scene pottutu irukiya 😂',
+  'ananth':'Hi ananth',
+  'doc':'Hey Doc!',
+  'panda':'i love pandas! and Tigers 🐼🐯',
+  'vee':'❤️',
+  'spidy':'Yov CODM polam free na text pannu',
+};
+
+/* ── MATRIX ── */
+let mtxRaf=null;
+function startMatrix(){
+  const cv=document.getElementById('mtx'),cl=document.getElementById('mtx-close');
+  cv.style.display='block';cl.style.display='block';
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d'),cols=Math.floor(cv.width/16),drops=Array(cols).fill(1);
+  const chars='アイウエオカキクケコ0123456789ABCDEF∞√∑πΩ';
+  (function draw(){ctx.fillStyle='rgba(0,0,0,.05)';ctx.fillRect(0,0,cv.width,cv.height);ctx.fillStyle='#0f0';ctx.font='15px JetBrains Mono,monospace';drops.forEach((y,i)=>{ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*16,y*16);if(y*16>cv.height&&Math.random()>.975)drops[i]=0;drops[i]++});mtxRaf=requestAnimationFrame(draw)})();
+}
+function stopMatrix(){cancelAnimationFrame(mtxRaf);document.getElementById('mtx').style.display='none';document.getElementById('mtx-close').style.display='none'}
+
+/* ── HACK SEQUENCE ── */
+const HACK_SEQ=[
+  ['> Scanning target: 192.168.0.1…','var(--text2)',380],
+  ['> Ports open: 22, 80, 443, 8080','var(--text)',320],
+  ['> Loading dictionary attack… ██████████░░ 83%','var(--accent)',500],
+  ['> Attempting Argon2id bypass…','var(--accent)',420],
+  ['> Attempting AES-256-GCM crack…','var(--accent)',420],
+  ['','',280],
+  ['> FAILED: Argon2id — infeasible GPU cost','var(--danger)',380],
+  ['> FAILED: AES-256-GCM — key not found','var(--danger)',380],
+  ['> FAILED: 6 AI pen-testers failed before you. You won\'t either.','var(--danger)',540],
+  ['','',180],
+  ['> Nice try. The vault holds. 😂','var(--text)',0],
+];
+let hackI=0;
+function runHack(){if(hackI>=HACK_SEQ.length){hackI=0;blank();return}const[t,c,d]=HACK_SEQ[hackI];if(t)node(`<span style="color:${c}">${x(t)}</span>`);hackI++;setTimeout(runHack,d||0)}
+
+/* ── KONAMI ── */
+let kIdx=0;
+const KONAMI=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+
+/* ── INPUT ── */
+const inp=document.getElementById('inp');
+const ALL_CMDS=['help','about','projects','wip','contact','support','hire','clear','/view',
+  'git log','matrix','hack','flip','ping','whoami','top','sudo','ls','dir',
+  'story','quest','tavern','dragon','guestbook','netscape','clippy','midi',
+  'forecast','changelog','timeline','quantum','bitcoin','reviews'];
+
+inp.addEventListener('keydown',e=>{
+  if(e.key===KONAMI[kIdx]){kIdx++}else{kIdx=0;if(e.key===KONAMI[0])kIdx=1}
+  if(kIdx===KONAMI.length){kIdx=0;blank();node(`<span style="color:var(--accent);font-weight:700;font-size:15px">🎮 KONAMI CODE ACCEPTED</span>`);node(`<span style="color:var(--text2)">Respect. Pure undeniable dev cred. Reward: nothing material.</span>`);blank()}
+  if(e.key==='Enter'){
+    const v=e.target.value.trim();
+    if(v){hist.unshift(v);if(hist.length>50)hist.pop()}
+    histIdx=-1;e.target.value='';processCmd(v);
+  }else if(e.key==='ArrowUp'){e.preventDefault();if(histIdx<hist.length-1){histIdx++;e.target.value=hist[histIdx]}}
+  else if(e.key==='ArrowDown'){e.preventDefault();if(histIdx>0){histIdx--;e.target.value=hist[histIdx]}else{histIdx=-1;e.target.value=''}}
+  else if(e.key==='Tab'){e.preventDefault();const p=e.target.value.trim().toLowerCase();if(p){const m=ALL_CMDS.find(c=>c.startsWith(p));if(m)e.target.value=m}}
+});
+
+function run(cmd){inp.value='';processCmd(cmd)}
+
+function processCmd(raw){
+  if(!raw.trim())return;
+  echoCmd(raw.trim());
+  const low=raw.trim().toLowerCase();
+
+  if(low.startsWith('/view')){
+    const id=raw.trim().slice(5).trim().toLowerCase();
+    const map={ciphercompass:'cipher-compass.html',cipher:'cipher-compass.html',cc:'cipher-compass.html',bison:'https://www.curseforge.com/minecraft-bedrock/addons/indian-bison-mount',dioo:'https://vymoir.itch.io/dioo'};
+    if(map[id]){const u=map[id];if(u.startsWith('http'))window.open(u,'_blank');else window.open(u,'_blank');blank();node(`<span style="color:var(--text)">Opening ${x(id)} in new tab…</span>`);blank()}
+    else if(!id){blank();node(`<span style="color:var(--text2)">Usage: /view [id]  →  ciphercompass | bison | dioo</span>`);blank()}
+    else{blank();node(`<span style="color:var(--danger)">not found: "${x(id)}"  →  try: ciphercompass | bison | dioo</span>`);blank()}
+    return;
+  }
+
+  const codeKey=low.replace('/codename--','').trim();
+  if(low.startsWith('/codename--')&&CODES[codeKey]){blank();node(`<span style="color:var(--accent)">${x(CODES[codeKey])}</span>`);blank();return}
+
+  if(low==='matrix'){blank();node(`<span style="color:var(--text)">Jacking in…</span>`);setTimeout(startMatrix,600);return}
+  if(low==='hack'){blank();hackI=0;runHack();return}
+  if(low==='flip'){const w=document.getElementById('wnd');const fl=w.style.transform==='rotate(180deg)';w.style.transition='transform .6s cubic-bezier(.4,0,.2,1)';w.style.transform=fl?'rotate(0deg)':'rotate(180deg)';blank();node(`<span style="color:var(--accent)">${fl?'right-side up.':'🙃'}</span>`);blank();return}
+  if(low.startsWith('sudo rm -rf')){blank();node(`<span style="color:var(--danger)">rm: cannot remove '/': Permission denied</span>`);node(`<span style="color:var(--text2)">The vault holds.</span>`);blank();return}
+  if(low.startsWith('sudo')){blank();node(`<span style="color:var(--danger)">[sudo] password for voidmonk:</span>`);setTimeout(()=>{node(`<span style="color:var(--danger)">Permission denied. Nice try.</span>`);blank()},800);return}
+  if(low==='ls'||low==='dir'){blank();node(`<span style="color:var(--text2)">drwxr-xr-x  about/  projects/  wip/  contact/  support/</span>`);node(`<span style="color:var(--text2);font-size:12px;font-style:italic">not a real shell — try <span style="color:var(--accent)">help</span></span>`);blank();return}
+  if(['hi','hello','hey','sup','yo'].includes(low)){blank();node(`<span style="color:var(--text)">Hey! 👋  Type <span style="color:var(--accent)">help</span> to explore.</span>`);blank();return}
+  if(low==='voidmonk'||low==='muthu'||low.includes('muthu vignesh')){blank();node(`<span style="color:var(--text)">That's me 👋</span>`);blank();return}
+  if(low==='42'){blank();node(`<span style="color:var(--accent2)">The answer to life, the universe, and everything.</span>`);blank();return}
+  if(low==='ping'||low==='ping voidmonk'){CMDS.ping();return}
+  if(low==='whoami'){CMDS.whoami();return}
+  if(low==='top'){CMDS.top();return}
+  if(low==='git log'||low==='git log --oneline'){CMDS['git log']();return}
+
+  const themeOnly={
+    medieval:['story','quest','tavern','dragon'],
+    web1991:['guestbook','netscape','clippy','midi'],
+    future:['forecast','changelog','timeline','quantum','bitcoin'],
+    aichat:['reviews'],
+  };
+
+  if(CMDS[low]){CMDS[low]();return}
+  if(era==='aichat'){aiAnswer(raw.trim());return}
+
+  const inOther=Object.entries(themeOnly).find(([t,cmds])=>t!==era&&cmds.includes(low));
+  if(inOther){blank();node(`<span style="color:var(--danger)">command not found: <span style="color:var(--bright)">${x(raw)}</span></span>`);node(`<span style="color:var(--text2);font-size:12px;font-style:italic">hint: try the <span style="color:var(--accent)">${inOther[0]}</span> theme</span>`);blank();return}
+
+  blank();
+  node(`<span style="color:var(--danger)">command not found: <span style="color:var(--bright)">${x(raw)}</span></span>`);
+  node(`<span style="color:var(--text2)">type <span style="color:var(--accent)">help</span> for available commands</span>`);
+  blank();
+}
+
+/* ── FAB ── */
+let fabOpen=false;
+function toggleFab(){
+  fabOpen=!fabOpen;
+  document.getElementById('fabBtn').classList.toggle('open',fabOpen);
+  document.getElementById('fabMenu').classList.toggle('open',fabOpen);
+}
+function closeFab(){fabOpen=false;document.getElementById('fabBtn').classList.remove('open');document.getElementById('fabMenu').classList.remove('open')}
+document.addEventListener('click',e=>{if(!document.getElementById('fabWrap').contains(e.target))closeFab()});
+
+/* ── ERA SWITCHER ── */
+function setEra(name){
+  era=name;
+  document.documentElement.setAttribute('data-theme',name);
+  document.getElementById('mobBar').setAttribute('data-theme-mob',name);
+  document.querySelectorAll('.fab-era').forEach(b=>b.classList.toggle('active',b.dataset.era===name));
+  document.getElementById('fabBtn').textContent=ERA[name].icon||'⚡';
+  const m=ERA[name];
+  document.getElementById('tb-lbl').textContent=m.lbl;
+  document.getElementById('ps').textContent=m.ps;
+  inp.placeholder=m.ph;
+  OUT.innerHTML='';
+  closeFab();
+if(name==='terminal'){
+    globeRaf=null;
+    BOOT.terminal().catch(()=>{});
+    const gInit=()=>setTimeout(()=>{initGlobe();initGraphs();initProcs()},200);
+    worldData?gInit():loadWorld().then(gInit);
+} else {
+    const boot=BOOT[name];
+    const r=typeof boot==='function'?boot.call(BOOT):null;
+    if(r&&r.catch)r.catch(()=>{});
+  }
+}
+document.querySelectorAll('.fab-era').forEach(b=>b.addEventListener('click',()=>{setEra(b.dataset.era)}));
+document.getElementById('wnd').addEventListener('click',()=>inp.focus());
+
+/* ── HIRE FORM ── */
+function openHire(){document.getElementById('h-ov').classList.add('open');setMsg('','')}
+function closeHire(){document.getElementById('h-ov').classList.remove('open')}
+function setMsg(m,c){const el=document.getElementById('h-msg');el.textContent=m;el.style.color=c}
+document.getElementById('h-ov').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHire()});
+document.getElementById('story-ov').addEventListener('click',e=>{if(e.target===e.currentTarget)document.getElementById('story-ov').classList.remove('open')});
+
+async function submitHire(e){
+  e.preventDefault();
+  if(document.getElementById('hp-f').value.trim())return;
+  if(!rateOk()){setMsg('Too many requests. Please wait a few minutes.','var(--danger)');return}
+  const type=document.getElementById('h-type').value.trim();
+  const desc=document.getElementById('h-desc').value.trim();
+  const budget=document.getElementById('h-budget').value.trim();
+  const email=document.getElementById('h-email').value.trim();
+  const urgent=document.getElementById('h-urg').checked;
+  if(!type||!desc||!budget||!email){setMsg('Please fill all required (*) fields.','var(--danger)');return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setMsg('Enter a valid email address.','var(--danger)');return}
+  if(desc.length<15){setMsg('Description too short — give me more context!','var(--danger)');return}
+  const btn=document.getElementById('h-btn');
+  btn.disabled=true;btn.textContent='Sending…';setMsg('','');
+  try{
+    if(typeof emailjs!=='undefined'&&C.ejs_key!=='YOUR_PUBLIC_KEY'){
+      emailjs.init(C.ejs_key);
+      await emailjs.send(C.ejs_svc,C.ejs_tpl,{
+        project_type:x(type),project_name:x(document.getElementById('h-name').value.trim()),
+        description:x(desc),deadline:x(document.getElementById('h-dead').value.trim()),
+        budget:x(budget),reply_email:x(email),urgent:urgent?'🚨 URGENT':'No'
+      });
+    }
+    setMsg('✓ Request sent! I\'ll reply within 24h.','var(--text)');
+    document.getElementById('h-form').reset();setTimeout(closeHire,2400);
+  }catch{setMsg(`Send failed. Email directly: ${C.email}`,'var(--danger)')}
+  finally{btn.disabled=false;btn.textContent='Send Request'}
+}
+
+/* ── VISIT COUNT ── */
+async function loadVisitCount(){
+  try{
+    const r=await fetch('https://api.counterapi.dev/v1/voidmonk-portfolio/visits/up');
+    if(r.ok){
+      const d=await r.json();
+      const txt=`👁 ${d.value.toLocaleString()}`;
+      document.getElementById('vc-display').textContent=txt+' visits';
+      const edex=document.getElementById('vc-edex');
+      if(edex)edex.innerHTML=`<b>VISITS</b>:${d.value.toLocaleString()}`;
+    }
+  }catch{}
+}
+loadVisitCount();
+
+/* ── RESIZE ── */
+let lastMobile=window.innerWidth<=900;
+window.addEventListener('resize',()=>{
+  if(era==='terminal'){
+    resizeGraphs();
+    const nowMobile=window.innerWidth<=900;
+    if(nowMobile!==lastMobile){
+      lastMobile=nowMobile;
+      cancelAnimationFrame(globeRaf);
+      globeRaf=null;
+      initGlobe();
+    }
+  }
+});
+
+/* ── INIT ── */
+(()=>{
+  const r=BOOT.terminal();if(r&&r.catch)r.catch(()=>{});
+  loadWorld().then(()=>{                    // ← add this
+    setTimeout(()=>{initGlobe();initGraphs();initProcs()},300);
+  });                                        // ← add this
+  inp.focus();
+})();
+</script>
+</body>
+</html>

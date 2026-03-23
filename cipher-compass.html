@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Cipher Compass — Your Secret Vault, Hidden in Plain Sight</title>
+<meta name="description" content="A private file vault hidden inside a compass app. No cloud, no accounts, no one can access your files but you.">
+<meta property="og:title" content="Cipher Compass — Hidden in Plain Sight">
+<meta property="og:description" content="Your vault looks like a compass. Nobody knows it's there.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+
+<style>
+:root{
+  --bg:#07090f;--bg2:#0c1120;--bg3:#111928;
+  --border:rgba(0,210,175,.1);--border2:rgba(0,210,175,.24);
+  --cyan:#00d4af;--gold:#c8952a;
+  --text:#eef2f7;--text2:#8090a4;--text3:#445566;
+  --success:#22c55e;--purple:#c084fc;
+  --fn:'Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --rad:16px;--rads:10px;--radl:24px;
+}
+[data-mode="light"]{
+  --bg:#f0f3fa;--bg2:#ffffff;--bg3:#e8ecf6;
+  --border:rgba(168,85,247,.12);--border2:rgba(168,85,247,.3);
+  --cyan:#7c3aed;--gold:#5b21b6;
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+  --purple:#7c3aed;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fn);overflow-x:hidden;line-height:1.65}
+img{max-width:100%;display:block;height:auto}
+a{color:var(--cyan);text-decoration:none;transition:opacity .2s;border:none}
+a:hover{opacity:.72}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:12px 48px;background:rgba(7,9,15,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);gap:16px}
+[data-mode="light"] nav{background:rgba(240,243,250,.92)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;color:var(--text);text-decoration:none;border:none}
+.nl-icon{width:38px;height:38px;border-radius:10px;overflow:hidden;flex-shrink:0}
+.nl-icon img{width:100%;height:100%;object-fit:cover}
+.nav-links{display:flex;gap:28px;list-style:none;flex:1;justify-content:center}
+.nav-links a{font-size:14px;color:var(--text2);transition:color .2s;border:none}
+.nav-links a:hover{color:var(--text)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-cta{background:var(--cyan);color:#000;font-weight:700;padding:9px 22px;border-radius:8px;font-size:14px;border:none;font-family:var(--fn);cursor:pointer;transition:opacity .2s,box-shadow .2s;white-space:nowrap;box-shadow:0 0 18px rgba(0,212,175,.32)}
+.nav-cta:hover{opacity:.85;box-shadow:0 0 32px rgba(0,212,175,.55)}
+
+/* ── HAMBURGER ── */
+.ham-wrap{position:relative}
+.ham-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:9px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:all .2s;flex-direction:column;gap:4px;padding:10px}
+.ham-btn:hover{border-color:var(--cyan);color:var(--text)}
+.ham-line{width:16px;height:1.5px;background:currentColor;border-radius:1px;transition:all .25s}
+.ham-btn.open .ham-line:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
+.ham-btn.open .ham-line:nth-child(2){opacity:0;transform:scaleX(0)}
+.ham-btn.open .ham-line:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
+.ham-dropdown{position:absolute;top:calc(100% + 10px);right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:8px;min-width:230px;opacity:0;pointer-events:none;transform:translateY(-8px) scale(.97);transition:all .22s cubic-bezier(.4,0,.2,1);z-index:9000;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.ham-dropdown.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1)}
+.hd-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:9px;cursor:pointer;transition:background .15s;color:var(--text);font-size:14px;font-weight:500;border:none;background:transparent;width:100%;font-family:var(--fn);text-align:left;text-decoration:none}
+.hd-item:hover{background:var(--bg3);color:var(--text)}
+.hd-ic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.hd-ic.cyan{background:rgba(0,212,175,.1)}
+.hd-ic.purple{background:rgba(192,132,252,.1)}
+.hd-ic.gold{background:rgba(200,149,42,.1)}
+.hd-ic.red{background:rgba(239,68,68,.1)}
+.hd-sep{height:1px;background:var(--border);margin:5px 0}
+.hd-sub{font-size:11px;color:var(--text3);margin-top:1px;font-weight:400}
+
+/* ── AUDIT MODAL ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9500;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:opacity .28s}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:36px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(20px);transition:transform .28s}
+.modal-ov.open .modal-box{transform:translateY(0)}
+.modal-x{position:absolute;top:18px;right:18px;background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;padding:4px 8px;font-family:var(--fn)}
+.modal-x:hover{color:var(--text)}
+.modal-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.28);border-radius:20px;padding:4px 13px;font-size:11px;color:#ef4444;font-weight:700;letter-spacing:.07em;margin-bottom:16px;text-transform:uppercase}
+.modal-box h2{font-size:22px;font-weight:800;margin-bottom:10px;letter-spacing:-.02em}
+.modal-box p{font-size:14px;color:var(--text2);line-height:1.82;margin-bottom:14px}
+.audit-row{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+.audit-ic{font-size:18px;flex-shrink:0;margin-top:1px}
+.audit-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.audit-desc{font-size:12px;color:var(--text2);line-height:1.65}
+.audit-note{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:9px;padding:13px 16px;font-size:12px;color:var(--text2);line-height:1.78;margin-top:16px}
+.audit-note strong{color:var(--text)}
+
+/* ── HERO ── */
+.hero{min-height:calc(100vh - 56px);padding:80px 48px 60px;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 72% 48%,rgba(0,210,175,.07) 0%,transparent 62%)}
+.hero::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,210,175,.3),transparent)}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,210,175,.1);border:1px solid rgba(0,210,175,.22);border-radius:30px;padding:5px 15px;font-size:12px;color:var(--cyan);font-weight:600;margin-bottom:24px;letter-spacing:.05em}
+.hero h1{font-size:clamp(30px,4.8vw,60px);font-weight:800;line-height:1.12;margin-bottom:20px;letter-spacing:-.02em}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--text2);line-height:1.78;margin-bottom:34px;max-width:460px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px}
+.btn-p{background:var(--cyan);color:#000;font-weight:700;padding:14px 30px;border-radius:10px;font-size:15px;display:inline-flex;align-items:center;gap:8px;border:none;font-family:var(--fn);cursor:pointer;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:0 0 22px rgba(0,212,175,.4)}
+.btn-p:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 0 40px rgba(0,212,175,.62)}
+.btn-g{background:transparent;border:1px solid var(--border2);color:var(--text);padding:14px 30px;border-radius:10px;font-size:15px;display:inline-flex;align-items:center;gap:8px;transition:all .2s;font-family:var(--fn);cursor:pointer}
+.btn-g:hover{border-color:var(--cyan);color:var(--cyan)}
+.hero-trust{display:flex;gap:22px;flex-wrap:wrap}
+.trust-i{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text3)}
+.trust-dot{width:5px;height:5px;border-radius:50%;background:#22c55e}
+
+/* ── COMPASS ── */
+.hero-visual{display:flex;flex-direction:column;align-items:center;gap:30px}
+.compass-outer{position:relative;width:300px;height:300px;flex-shrink:0;animation:compassFloat 6s ease-in-out infinite;cursor:crosshair}
+.compass-gold-ring{width:100%;height:100%;border-radius:50%;background:conic-gradient(#8a6010,#c8952a,#e8b84b,#f5d07a,#e8b84b,#c8952a,#9a6e1a,#c8952a);padding:11px;box-shadow:0 0 40px rgba(200,149,42,.28),inset 0 0 20px rgba(0,0,0,.5)}
+.compass-face{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 38% 32%,#1c1c1c,#080808);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.compass-svg-wrap{position:absolute;inset:0;width:100%;height:100%}
+.compass-center-jewel{position:absolute;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle,#f5d07a,#c8952a);box-shadow:0 0 8px rgba(232,184,75,.7);z-index:4}
+.phone-strip{display:flex;gap:14px;align-items:flex-end}
+.pf{border-radius:22px;overflow:hidden;border:2px solid rgba(0,210,175,.18);box-shadow:0 14px 44px rgba(0,0,0,.5);flex-shrink:0;transition:transform .3s}
+.pf:hover{transform:translateY(-4px)}
+.pf.main{width:140px}.pf.side{width:110px;opacity:.6;transform:translateY(10px)}
+.pf img{width:100%;display:block}
+
+/* ── SECTIONS ── */
+.sec{padding:88px 48px}
+.container{max-width:1200px;margin:0 auto;width:100%}
+.sec-label{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:block}
+.sec-title{font-size:clamp(26px,3.5vw,44px);font-weight:800;line-height:1.18;margin-bottom:14px;letter-spacing:-.02em}
+.sec-sub{font-size:16px;color:var(--text2);line-height:1.78;max-width:540px}
+.sec-head{text-align:center;margin-bottom:56px}
+.sec-head .sec-sub{margin:0 auto}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
+
+/* ── FEATURES ── */
+#features{background:var(--bg2)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.fc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad);padding:30px;transition:border-color .25s,transform .25s}
+.fc:hover{border-color:var(--border2);transform:translateY(-4px)}
+.fc-icon{width:50px;height:50px;border-radius:13px;background:rgba(0,210,175,.1);border:1px solid rgba(0,210,175,.2);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
+.fc h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.fc .fc-tag{font-size:11px;color:var(--cyan);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.fc p{font-size:14px;color:var(--text2);line-height:1.78}
+
+/* ── HOW IT WORKS ── */
+#how{background:var(--bg)}
+.how-steps{display:flex;flex-direction:column;gap:72px}
+.how-step{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.how-step.rev{direction:rtl}
+.how-step.rev>*{direction:ltr}
+.step-num{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--cyan);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sn{width:26px;height:26px;border-radius:50%;background:var(--cyan);color:#000;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.how-step h3{font-size:clamp(22px,2.8vw,30px);font-weight:800;margin-bottom:12px;line-height:1.25;letter-spacing:-.02em}
+.how-step p{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:14px}
+.how-step .plain-note{font-size:13px;color:var(--text3);font-style:italic;line-height:1.7;padding-left:14px;border-left:2px solid var(--border2)}
+.step-img{border-radius:var(--radl);overflow:hidden;border:1px solid var(--border);box-shadow:0 24px 64px rgba(0,0,0,.45);max-width:280px;margin:0 auto}
+
+/* ── SECURITY ── */
+#security{background:var(--bg2)}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.spec{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rads);padding:20px 22px;display:flex;gap:14px;align-items:flex-start;transition:border-color .22s}
+.spec:hover{border-color:var(--border2)}
+.spec-ic{width:38px;height:38px;border-radius:9px;flex-shrink:0;background:rgba(0,210,175,.08);border:1px solid rgba(0,210,175,.14);display:flex;align-items:center;justify-content:center;font-size:16px}
+.spec h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.spec p{font-size:12px;color:var(--text2);line-height:1.65}
+.spec-plain{font-size:11px;color:var(--cyan);margin-top:5px;font-weight:500}
+
+/* ── PARANOID ── */
+#paranoid{background:var(--bg)}
+.prd-card{border:1px solid rgba(192,132,252,.28);border-radius:var(--radl);padding:52px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(12,17,35,.95),rgba(8,11,24,.95))}
+.prd-card::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 28% 50%,rgba(192,132,252,.07),transparent 65%)}
+.prd-glow{animation:prdGlow 3.5s ease-in-out infinite}
+@keyframes prdGlow{0%,100%{box-shadow:0 0 40px rgba(192,132,252,.12)}50%{box-shadow:0 0 80px rgba(192,132,252,.28)}}
+.prd-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.3);border-radius:20px;padding:4px 13px;font-size:11px;color:#c084fc;font-weight:700;letter-spacing:.07em;margin-bottom:18px;text-transform:uppercase}
+/* prd-card always has a dark background — force light text regardless of theme */
+.prd-card h2{font-size:clamp(24px,3vw,34px);font-weight:800;margin-bottom:14px;letter-spacing:-.02em;color:#eef2f7}
+.prd-card>div:first-child>p{font-size:15px;color:rgba(155,175,200,.85);line-height:1.78;margin-bottom:26px}
+.prd-specs{display:flex;flex-direction:column;gap:10px}
+.prd-sp{display:flex;align-items:flex-start;gap:9px;font-size:14px;color:rgba(155,175,200,.85);line-height:1.6}
+.prd-sp::before{content:'✓';color:#c084fc;font-weight:700;flex-shrink:0;margin-top:1px}
+.prd-vis{background:rgba(192,132,252,.06);border:1px solid rgba(192,132,252,.18);border-radius:var(--rad);padding:26px}
+.pv-row{margin-bottom:22px}.pv-row:last-child{margin-bottom:0}
+.pv-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#445566;margin-bottom:6px;font-family:var(--mono)}
+.pv-bar{height:7px;border-radius:4px;background:#111928;overflow:hidden;margin-bottom:4px}
+.pv-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#7c3aed,#c084fc)}
+.pv-note{font-size:11px;color:#445566;font-family:var(--mono)}
+
+/* ── FILES ── */
+#files{background:var(--bg2)}
+.file-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.ft{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rads);padding:18px 14px;text-align:center;transition:border-color .2s,transform .2s}
+.ft:hover{border-color:var(--border2);transform:translateY(-3px)}
+.ft-icon{font-size:26px;margin-bottom:10px}
+.ft-cat{font-size:12px;font-weight:700;margin-bottom:5px}
+.ft-exts{font-size:10px;color:var(--text3);font-family:var(--mono);line-height:1.7}
+
+/* ── FAQ ── */
+#faq{background:var(--bg)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:22px 24px;transition:border-color .2s}
+.faq-item:hover{border-color:var(--border2)}
+.faq-q{font-size:15px;font-weight:700;margin-bottom:9px;color:var(--text)}
+.faq-a{font-size:14px;color:var(--text2);line-height:1.78}
+.faq-a strong{color:var(--text)}
+
+/* ── SCREENSHOTS ── */
+#screenshots{background:var(--bg2)}
+.shots-row{display:flex;gap:18px;overflow-x:auto;padding:16px 4px 24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.shots-row::-webkit-scrollbar{height:3px}
+.shots-row::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sf{flex-shrink:0;width:190px;scroll-snap-align:start;border-radius:22px;overflow:hidden;border:2px solid var(--border);box-shadow:0 16px 48px rgba(0,0,0,.4);transition:transform .25s,border-color .25s}
+.sf:hover{transform:translateY(-6px) scale(1.02);border-color:var(--border2)}
+.sf img{width:100%;display:block}
+.sf-cap{text-align:center;font-size:11px;color:var(--text3);margin-top:8px;font-weight:500}
+
+/* ── DOWNLOAD ── */
+#download{background:var(--bg2);padding:100px 48px;text-align:center}
+.dl-wrap{max-width:580px;margin:0 auto}
+.dl-icon{width:90px;height:90px;border-radius:22px;margin:0 auto 28px;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 36px rgba(0,210,175,.16)}
+.dl-icon img{width:100%;height:100%;object-fit:contain}
+#download h2{font-size:clamp(28px,4vw,42px);font-weight:800;margin-bottom:14px;letter-spacing:-.02em}
+#download p{font-size:16px;color:var(--text2);margin-bottom:38px;line-height:1.7}
+.dl-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.dl-btn{display:inline-flex;align-items:center;gap:14px;background:#0f0f0f;color:#fff;border-radius:14px;padding:14px 26px;border:1px solid rgba(255,255,255,.1);transition:opacity .2s,transform .15s,box-shadow .2s;font-family:var(--fn);box-shadow:0 0 18px rgba(0,212,175,.18)}
+.dl-btn:hover{opacity:.85;transform:translateY(-2px);color:#fff;box-shadow:0 0 36px rgba(0,212,175,.38)}
+.dl-btn-sub{font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.08em;display:block}
+.dl-btn-title{font-size:16px;font-weight:700;display:block;margin-top:2px}
+.dl-coming{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 22px;font-size:14px;color:var(--text3);font-family:var(--fn);margin-top:12px}
+
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:30px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.foot-l{font-size:13px;color:var(--text3)}
+.foot-links{display:flex;gap:18px}
+.foot-links a{font-size:13px;color:var(--text3);transition:color .2s;border:none}
+.foot-links a:hover{color:var(--cyan)}
+
+@keyframes compassFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+@media(max-width:960px){
+  .hero-inner,.how-step,.how-step.rev,.prd-card,.faq-grid{grid-template-columns:1fr}
+  .hero-inner{gap:44px;text-align:center}
+  /* fix: ensure the hero text column centres all its children */
+  .hero-inner>div:first-child{display:flex;flex-direction:column;align-items:center}
+  .hero-sub{margin-left:auto;margin-right:auto}
+  .hero-ctas,.hero-trust{justify-content:center}
+  .how-step.rev{direction:ltr}
+  .how-step{gap:32px}
+  .how-step.rev .step-img{order:-1}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  nav{padding:12px 22px}
+  .nav-links{display:none}
+  .sec{padding:64px 22px}
+  .hero{padding:80px 22px 56px}
+  #download{padding:64px 22px}
+  footer{padding:24px 22px;flex-direction:column;align-items:center;text-align:center}
+  .compass-outer{width:240px;height:240px}
+  /* audit modal — reduce padding on smaller screens */
+  .modal-box{padding:24px;border-radius:16px}
+}
+@media(max-width:540px){
+  .feat-grid{grid-template-columns:1fr}
+  .prd-card{padding:28px 22px}
+  .sf{width:160px}
+  .compass-outer{width:200px;height:200px}
+  .modal-box{padding:18px;border-radius:14px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nl-icon"><img id="navIcon" src="images/cc/icon.png" alt="Cipher Compass"></div>
+    <span>Cipher Compass</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#security">Security</a></li>
+    <li><a href="#screenshots">Screenshots</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-cta" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">Get the App</button>
+    <div class="ham-wrap" id="hamWrap">
+      <button class="ham-btn" id="hamBtn" onclick="toggleHam()" aria-label="Menu">
+        <div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div>
+      </button>
+      <div class="ham-dropdown" id="hamDrop">
+        <button class="hd-item" onclick="toggleMode();closeHam()">
+          <div class="hd-ic cyan" id="themeIc">☀</div>
+          <div><div id="themeLabel">Switch to Light Mode</div><div class="hd-sub">Toggle appearance</div></div>
+        </button>
+        <div class="hd-sep"></div>
+        <button class="hd-item" onclick="openAudit();closeHam()">
+          <div class="hd-ic red">🛡</div>
+          <div><div>Security Audits</div><div class="hd-sub">Our red team review process</div></div>
+        </button>
+        <div class="hd-sep"></div>
+        <a class="hd-item" href="#" onclick="closeHam()">
+          <div class="hd-ic purple">📋</div>
+          <div><div>Dev Logs</div><div class="hd-sub">Updates &amp; changelogs — coming soon</div></div>
+        </a>
+        <div class="hd-sep"></div>
+        <a class="hd-item" href="https://voidmonk16.github.io/#" target="_blank" rel="noopener" onclick="closeHam()">
+          <div class="hd-ic gold">⚖</div>
+          <div><div>Privacy &amp; Terms</div><div class="hd-sub">Legal documents</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- AUDIT MODAL -->
+<div class="modal-ov" id="auditModal">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeAudit()">✕</button>
+    <div class="modal-tag">🛡 Security Audits</div>
+    <h2>Red Team Review Process</h2>
+    <p>Before any public release, Cipher Compass undergoes adversarial security reviews. Here's what that looks like — and what we deliberately don't tell you.</p>
+    <div class="audit-row">
+      <div class="audit-ic">🔁</div>
+      <div>
+        <div class="audit-title">Ongoing, not one-time</div>
+        <div class="audit-desc">We've completed 6 red team review sessions to date. Each major build revision triggers a new review before release. Security isn't a checkbox — it's a habit.</div>
+      </div>
+    </div>
+    <div class="audit-row">
+      <div class="audit-ic">🤖</div>
+      <div>
+        <div class="audit-title">AI-assisted adversarial testing</div>
+        <div class="audit-desc">Multiple AI models simulate attacker scenarios across the authentication flow, encryption implementation, and data handling — independently and in combination.</div>
+      </div>
+    </div>
+    <div class="audit-row">
+      <div class="audit-ic">✅</div>
+      <div>
+        <div class="audit-title">Result: no critical vulnerabilities found</div>
+        <div class="audit-desc">Across all sessions, no exploitable vulnerability has been identified in the core security architecture. Issues found during development were resolved before release.</div>
+      </div>
+    </div>
+    <div class="audit-note">
+      <strong>Why we don't publish the full methodology:</strong> Publishing what was tested, how it was tested, and what wasn't found gives attackers a map of exactly where to look next. A clean audit report in the wrong hands is still a roadmap. We tell you the outcome. The details stay internal.
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🔒 Android · Closed Testing — Public Launch Soon</div>
+      <h1>Your Secret Vault,<br>Hidden in Plain Sight</h1>
+      <p class="hero-sub">Your private files stay private — locked with encryption strong enough to protect state secrets, disguised as an app that looks completely ordinary on your home screen.</p>
+      <div class="hero-ctas">
+        <button class="btn-p" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">▶ Get on Google Play</button>
+        <button class="btn-g" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See how it works →</button>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-i"><div class="trust-dot"></div>Bank-grade encryption</div>
+        <div class="trust-i"><div class="trust-dot"></div>No internet required</div>
+        <div class="trust-i"><div class="trust-dot"></div>Zero accounts</div>
+        <div class="trust-i"><div class="trust-dot"></div>Red team audited</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="compass-outer" id="compassOuter">
+        <div class="compass-gold-ring">
+          <div class="compass-face">
+            <svg class="compass-svg-wrap" id="compassSvg" viewBox="-100 -100 200 200">
+              <g id="bezelGroup"></g>
+              <!-- M = Mouse. The needle follows your cursor. Get it? -->
+              <text x="0" y="-74" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="700" fill="white" font-family="Plus Jakarta Sans,sans-serif">M</text>
+              <g id="needleGroup">
+                <polygon points="0,-62 -5,-6 5,-6" fill="#ef4444" opacity=".95"/>
+                <polygon points="0,62 -5,6 5,6" fill="rgba(200,200,200,0.45)"/>
+              </g>
+            </svg>
+            <div class="compass-center-jewel"></div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-strip">
+        <div class="pf side"><img src="images/cc/welcome.jpg" alt="Welcome"></div>
+        <div class="pf main"><img src="images/cc/decoy.jpg" alt="Compass"></div>
+        <div class="pf side"><img src="images/cc/list.jpg" alt="Vault"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec" id="features">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-label rv">Why it's different</span>
+      <h2 class="sec-title rv d1">The vault nobody can find</h2>
+      <p class="sec-sub rv d2">Other apps put a lock icon on your home screen. Cipher Compass doesn't even reveal that a vault exists.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="fc rv">
+        <div class="fc-icon">🧭</div>
+        <div class="fc-tag">Disguise</div>
+        <h3>Looks Like an Ordinary Compass</h3>
+        <p>On your home screen, it's named "Compass+" and behaves exactly like a real compass. There's no vault icon, no suspicious name, no hint of what it actually is. The best hiding place is in plain sight.</p>
+      </div>
+      <div class="fc rv d1">
+        <div class="fc-icon">🔐</div>
+        <div class="fc-tag">Encryption</div>
+        <h3>Your Files Never Leave Your Device</h3>
+        <p>Everything is encrypted locally using the same standard that protects classified government data. No cloud upload, no server, no account required — not even ours. Your files exist only on your phone.</p>
+      </div>
+      <div class="fc rv d2">
+        <div class="fc-icon">🎯</div>
+        <div class="fc-tag">Access</div>
+        <h3>A Secret Entry Only You Know</h3>
+        <p>Opening the vault requires three things you define during setup: a secret compass bearing, a specific gesture, and your PIN. Someone holding your phone just sees a working compass.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="sec" id="how">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-label rv">How it works</span>
+      <h2 class="sec-title rv d1">Three things to know. None of them obvious.</h2>
+      <p class="sec-sub rv d2">Setup takes about three minutes. After that, your vault is invisible to anyone who isn't you.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step rv">
+        <div>
+          <div class="step-num"><span class="sn">1</span>Your secret is a direction</div>
+          <h3>Rotate to your chosen bearing</h3>
+          <p>During setup, you pick a compass bearing that only you know. When you physically rotate your phone to face that direction, a silent access window opens — and immediately closes if you don't proceed.</p>
+          <p class="plain-note">Think of it like a combination lock, but the dial is the real world around you.</p>
+        </div>
+        <div class="step-img"><img src="images/cc/decoy.jpg" alt="Compass screen"></div>
+      </div>
+      <div class="how-step rev rv">
+        <div>
+          <div class="step-num"><span class="sn">2</span>Your secret is a gesture</div>
+          <h3>Perform the gesture you defined</h3>
+          <p>A physical gesture — press and hold — must follow the bearing. The timing window is short and deliberate. Any interruption (backgrounding the app, answering a call) resets the entire flow.</p>
+          <p class="plain-note">Even if someone knows your PIN, the gesture stops them cold.</p>
+        </div>
+        <div class="step-img"><img src="images/cc/auth.jpg" alt="Auth screen"></div>
+      </div>
+      <div class="how-step rv">
+        <div>
+          <div class="step-num"><span class="sn">3</span>Your secret is your key</div>
+          <h3>PIN or fingerprint — your choice</h3>
+          <p>The final step is your PIN or biometrics. Repeated failed attempts trigger a progressively increasing lockout. The timer uses hardware clock — it cannot be bypassed by changing your phone's system time.</p>
+          <p class="plain-note">You get the convenience of fingerprint unlock without sacrificing any security.</p>
+        </div>
+        <div class="step-img"><img src="images/cc/settings-biometric.jpg" alt="Biometric settings"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="sec" id="security">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-label rv">Under the hood</span>
+      <h2 class="sec-title rv d1">Security that holds up to scrutiny.</h2>
+      <p class="sec-sub rv d2">Every protection is deliberate. Nothing is here for marketing purposes.</p>
+    </div>
+    <div class="spec-grid">
+      <div class="spec rv">
+        <div class="spec-ic">🔒</div>
+        <div>
+          <h4>AES-256-GCM Encryption</h4>
+          <p>The same standard used by governments and financial institutions. Each file is encrypted independently with authenticated encryption — tampering is cryptographically detectable.</p>
+          <div class="spec-plain">What this means: nobody can read your files, even with direct device access.</div>
+        </div>
+      </div>
+      <div class="spec rv d1">
+        <div class="spec-ic">🧠</div>
+        <div>
+          <h4>Memory-Hard Key Derivation</h4>
+          <p>Your PIN is never stored. It's transformed into an encryption key using a deliberately slow, memory-intensive algorithm — one that makes automated cracking attacks impractical regardless of hardware.</p>
+          <div class="spec-plain">What this means: brute-forcing your PIN is not a viable attack.</div>
+        </div>
+      </div>
+      <div class="spec rv d2">
+        <div class="spec-ic">🔑</div>
+        <div>
+          <h4>Hardware-Bound Keys</h4>
+          <p>Encryption keys are stored inside your phone's secure hardware chip — the same component that protects banking apps. Keys physically cannot be extracted, even from a rooted device.</p>
+          <div class="spec-plain">What this means: your keys stay on your device, permanently.</div>
+        </div>
+      </div>
+      <div class="spec rv">
+        <div class="spec-ic">📸</div>
+        <div>
+          <h4>Screen Capture Blocked</h4>
+          <p>System-level screen capture protection is active across the entire app — screenshots, screen recordings, and remote display are all blocked at the OS level.</p>
+          <div class="spec-plain">What this means: no accidental leaks from screen recordings.</div>
+        </div>
+      </div>
+      <div class="spec rv d1">
+        <div class="spec-ic">⏱</div>
+        <div>
+          <h4>Progressive Lockout</h4>
+          <p>Repeated incorrect PIN attempts trigger increasing lockout periods. The clock is tied to hardware time — changing your phone's date or time has no effect on the lockout.</p>
+          <div class="spec-plain">What this means: guessing attacks are rate-limited in hardware.</div>
+        </div>
+      </div>
+      <div class="spec rv d2">
+        <div class="spec-ic">⚡</div>
+        <div>
+          <h4>Keys Never Linger</h4>
+          <p>Encryption keys are loaded only when actively needed and cleared from memory immediately after use. Large files are processed in isolated execution contexts.</p>
+          <div class="spec-plain">What this means: keys aren't sitting in memory waiting to be found.</div>
+        </div>
+      </div>
+      <div class="spec rv">
+        <div class="spec-ic">🗑</div>
+        <div>
+          <h4>Cryptographic Deletion</h4>
+          <p>Deleted files are overwritten using a secure multi-pass process. Video content uses ephemeral storage containers that are destroyed, not just unlinked.</p>
+          <div class="spec-plain">What this means: deleted files cannot be recovered with forensic tools.</div>
+        </div>
+      </div>
+      <div class="spec rv d1">
+        <div class="spec-ic">🌐</div>
+        <div>
+          <h4>Completely Offline</h4>
+          <p>Cipher Compass doesn't need an internet connection to work. The only time you'll need it is to download updates from the Play Store. Everything else — encrypting, unlocking, managing your vault — happens entirely on your device.</p>
+          <div class="spec-plain">What this means: the app cannot transmit your data even if it wanted to.</div>
+        </div>
+      </div>
+      <div class="spec rv d2">
+        <div class="spec-ic">🛡</div>
+        <div>
+          <h4>Nothing Collected. Ever.</h4>
+          <p>No analytics, no crash reporting, no advertising SDKs, no account system. There is no user database because there are no users — only devices. We have nothing to breach.</p>
+          <div class="spec-plain">What this means: there's no server-side data leak to worry about.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARANOID MODE -->
+<section class="sec" id="paranoid">
+  <div class="container">
+    <div class="prd-card prd-glow rv">
+      <div>
+        <div class="prd-badge">⚡ Premium — One-Time Purchase</div>
+        <h2>Paranoid Mode</h2>
+        <p>For the files you absolutely cannot afford to have compromised. Paranoid Mode significantly raises the cost of any attack — at the expense of a barely-noticeable unlock delay.</p>
+        <div class="prd-specs">
+          <div class="prd-sp">Substantially stronger key derivation — raises the hardware cost of any attack</div>
+          <div class="prd-sp">Negligible impact on everyday use — you'll notice a brief pause, not a slowdown</div>
+          <div class="prd-sp">Recommended for anyone storing sensitive documents or media</div>
+          <div class="prd-sp">No subscriptions — pay once, keep forever</div>
+          <div class="prd-sp">Works alongside all existing security layers — not a replacement</div>
+        </div>
+      </div>
+      <div class="prd-vis rv d1">
+        <div class="pv-row">
+          <div class="pv-lbl">Attack cost — Standard</div>
+          <div class="pv-bar"><div class="pv-fill" style="width:42%"></div></div>
+          <div class="pv-note">Already infeasible with modern hardware</div>
+        </div>
+        <div class="pv-row">
+          <div class="pv-lbl">Attack cost — Paranoid Mode</div>
+          <div class="pv-bar"><div class="pv-fill" style="width:100%"></div></div>
+          <div class="pv-note">Significantly higher — well beyond current GPU capabilities</div>
+        </div>
+        <div class="pv-row">
+          <div class="pv-lbl">Impact on your unlock time</div>
+          <div class="pv-bar"><div class="pv-fill" style="width:8%"></div></div>
+          <div class="pv-note">Barely noticeable — a brief pause</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILE TYPES -->
+<section class="sec" id="files">
+  <div class="container">
+    <div class="sec-head"><span class="sec-label rv">File support</span><h2 class="sec-title rv d1">Lock away anything.</h2><p class="sec-sub rv d2">Photos, videos, documents, voice notes — if it's on your phone, it can go in the vault.</p></div>
+    <div class="file-grid">
+      <div class="ft rv"><div class="ft-icon">🖼</div><div class="ft-cat">Images</div><div class="ft-exts">JPG · PNG · GIF · WEBP · BMP · HEIC</div></div>
+      <div class="ft rv d1"><div class="ft-icon">🎬</div><div class="ft-cat">Videos</div><div class="ft-exts">MP4 · MOV · MKV · AVI · WEBM · 3GP</div></div>
+      <div class="ft rv d2"><div class="ft-icon">🎵</div><div class="ft-cat">Audio</div><div class="ft-exts">MP3 · M4A · AAC · WAV · OGG · FLAC</div></div>
+      <div class="ft rv"><div class="ft-icon">📄</div><div class="ft-cat">Documents</div><div class="ft-exts">PDF · TXT · MD · JSON · CSV · XML · HTML</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ — FOR REAL PEOPLE -->
+<section class="sec" id="faq">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-label rv">Common questions</span>
+      <h2 class="sec-title rv d1">The things that actually matter.</h2>
+      <p class="sec-sub rv d2">Most people don't care how encryption works. They care whether their stuff is safe and whether they'll lose it.</p>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item rv">
+        <div class="faq-q">What if I forget my PIN?</div>
+        <div class="faq-a">During setup, you'll receive a 12-word recovery phrase. <strong>Write it down on paper and store it somewhere safe.</strong> If you forget your PIN, the recovery phrase is your only way back in. Lose both and the files are gone — that's not a flaw, it's the point.</div>
+      </div>
+      <div class="faq-item rv d1">
+        <div class="faq-q">Will my files survive if I uninstall?</div>
+        <div class="faq-a"><strong>No.</strong> Uninstalling the app destroys the encryption keys permanently. Export anything you want to keep before uninstalling. This is intentional — it means uninstalling is a clean, irreversible wipe.</div>
+      </div>
+      <div class="faq-item rv d2">
+        <div class="faq-q">Can the developer see my files?</div>
+        <div class="faq-a">Physically impossible. There are no servers, no accounts, and the app has no internet access. Your files are encrypted on your device with a key derived from your PIN — a PIN we never see and never store. We have nothing to hand over, even if asked.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q">Is this complicated to use?</div>
+        <div class="faq-a">Setup takes about three minutes. After that, opening your vault is quick — rotate, gesture, unlock. The first few times feel deliberate. Within a week, it becomes muscle memory. <strong>If you can use a compass, you can use Cipher Compass.</strong></div>
+      </div>
+      <div class="faq-item rv d1">
+        <div class="faq-q">What if someone watches me unlock it?</div>
+        <div class="faq-a">That's exactly what the compass bearing and gesture are for. Even if someone watches you enter your PIN, they still don't know which direction to point the phone or what gesture to perform. Three factors means one leaked secret isn't enough.</div>
+      </div>
+      <div class="faq-item rv d2">
+        <div class="faq-q">What happens if I get the PIN wrong?</div>
+        <div class="faq-a">After repeated incorrect attempts, the app enters a progressively increasing lockout — getting longer with each failed attempt. This protects you even if someone has physical access to your phone and unlimited time to try.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section class="sec" id="screenshots">
+  <div class="container">
+    <div class="sec-head"><span class="sec-label rv">Screenshots</span><h2 class="sec-title rv d1">See it for yourself.</h2><p class="sec-sub rv d2">The app that looks like a compass. The vault nobody finds.</p></div>
+    <div class="shots-row">
+      <div><div class="sf"><img src="images/cc/decoy.jpg" alt="What others see"></div><div class="sf-cap">What others see</div></div>
+      <div><div class="sf"><img src="images/cc/welcome.jpg" alt="Welcome"></div><div class="sf-cap">Onboarding</div></div>
+      <div><div class="sf"><img src="images/cc/list.jpg" alt="Vault"></div><div class="sf-cap">Your vault</div></div>
+      <div><div class="sf"><img src="images/cc/encrypting.jpg" alt="Encrypting"></div><div class="sf-cap">Encrypting files</div></div>
+      <div><div class="sf"><img src="images/cc/settings-general.jpg" alt="Settings"></div><div class="sf-cap">Security settings</div></div>
+      <div><div class="sf"><img src="images/cc/settings-paranoid.jpg" alt="Paranoid Mode"></div><div class="sf-cap">Paranoid Mode</div></div>
+      <div><div class="sf"><img src="images/cc/auth.jpg" alt="Unlock"></div><div class="sf-cap">Vault unlock</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download">
+  <div class="dl-wrap rv">
+    <div class="dl-icon"><img src="images/cc/icon-transparent.png" alt="Cipher Compass"></div>
+    <h2>Your files deserve real privacy.</h2>
+    <p>No cloud. No accounts. No one but you. Not even us.</p>
+    <div class="dl-btns">
+      <a class="dl-btn" href="https://play.google.com/store/apps/details?id=com.vymoir.ciphercompass" target="_blank" rel="noopener">
+        <span style="font-size:26px">▶</span>
+        <div><span class="dl-btn-sub">Get it on</span><span class="dl-btn-title">Google Play</span></div>
+      </a>
+    </div>
+    <div class="dl-coming">🔜 Public launch coming soon — currently in closed testing</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-l">© 2026 VoidMonk · Vymoir Studio · Cipher Compass</div>
+  <div class="foot-links">
+    <a href="https://voidmonk16.github.io/#" target="_blank" rel="noopener">Privacy &amp; Terms</a>
+    <a href="mailto:vymoirstudio@gmail.com">Contact</a>
+    <a href="index.html">Portfolio</a>
+  </div>
+</footer>
+
+<script>
+/* ── COMPASS ── */
+const compassOuter = document.getElementById('compassOuter');
+const needleGroup  = document.getElementById('needleGroup');
+const bezelGroup   = document.getElementById('bezelGroup');
+
+for(let i = 0; i < 72; i++){
+  const angle = i * 5, rad = angle * Math.PI / 180;
+  const isMajor = i % 9 === 0;
+  const r1 = 90, r2 = isMajor ? 80 : 84;
+  const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1', Math.sin(rad)*r1); line.setAttribute('y1', -Math.cos(rad)*r1);
+  line.setAttribute('x2', Math.sin(rad)*r2); line.setAttribute('y2', -Math.cos(rad)*r2);
+  line.setAttribute('stroke', isMajor ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.22)');
+  line.setAttribute('stroke-width', isMajor ? '2' : '1');
+  bezelGroup.appendChild(line);
+}
+
+let targetAngle = 0, currentAngle = 0;
+document.addEventListener('mousemove', e => {
+  const r = compassOuter.getBoundingClientRect();
+  targetAngle = Math.atan2(e.clientX - (r.left + r.width/2), -(e.clientY - (r.top + r.height/2))) * 180/Math.PI;
+});
+if(window.DeviceOrientationEvent)
+  window.addEventListener('deviceorientation', e => { if(e.alpha!==null) targetAngle = e.alpha; });
+(function animNeedle(){
+  let d = targetAngle - currentAngle;
+  while(d > 180) d -= 360; while(d < -180) d += 360;
+  currentAngle += d * 0.08;
+  needleGroup.setAttribute('transform', `rotate(${currentAngle})`);
+  requestAnimationFrame(animNeedle);
+})();
+
+/* ── HAMBURGER ── */
+function toggleHam(){
+  document.getElementById('hamBtn').classList.toggle('open');
+  document.getElementById('hamDrop').classList.toggle('open');
+}
+function closeHam(){
+  document.getElementById('hamBtn').classList.remove('open');
+  document.getElementById('hamDrop').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if(!document.getElementById('hamWrap').contains(e.target)) closeHam();
+});
+
+/* ── AUDIT MODAL ── */
+function openAudit(){
+  document.getElementById('auditModal').classList.add('open');
+}
+function closeAudit(){
+  document.getElementById('auditModal').classList.remove('open');
+}
+document.getElementById('auditModal').addEventListener('click', e => {
+  if(e.target === document.getElementById('auditModal')) closeAudit();
+});
+
+/* ── THEME ── */
+function toggleMode(){
+  const html = document.documentElement;
+  const isLight = html.dataset.mode === 'light';
+  html.dataset.mode = isLight ? 'dark' : 'light';
+  document.getElementById('themeIc').textContent    = isLight ? '☀' : '☾';
+  document.getElementById('themeLabel').textContent = isLight ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+}
+
+/* ── SCROLL REVEAL ── */
+const observer = new IntersectionObserver(entries =>
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); }), {threshold:.1});
+document.querySelectorAll('.rv').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
