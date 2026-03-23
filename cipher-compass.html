@@ -233,10 +233,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:30px 48p
 
 @media(max-width:960px){
   .hero-inner,.how-step,.how-step.rev,.prd-card,.faq-grid{grid-template-columns:1fr}
-  .hero-inner{gap:44px;text-align:center}
-  .hero-inner>div:first-child{display:flex;flex-direction:column;align-items:center;width:100%}
-  .hero-sub{margin-left:auto;margin-right:auto;max-width:100%;width:100%}
-  .hero-ctas,.hero-trust{justify-content:center}
+.hero-inner{gap:44px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero-inner>div:first-child{display:flex;flex-direction:column;align-items:center;width:100%}
+.hero-sub{margin-left:auto;margin-right:auto;max-width:100%!important;width:100%}
+.hero-ctas,.hero-trust{justify-content:center}
   .how-step.rev{direction:ltr}
   .how-step{gap:32px}
   .how-step.rev .step-img{order:-1}
@@ -244,8 +244,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:30px 48p
   nav{padding:12px 22px}
   .nav-links{display:none}
   .sec{padding:64px 22px}
-  .hero{padding:80px 0 56px}
-  .hero-inner{padding:0 22px}
+  .hero{padding:80px 20px 56px}
+.hero-inner{width:100%;box-sizing:border-box}
   #download{padding:64px 22px}
   footer{padding:24px 22px;flex-direction:column;align-items:center;text-align:center}
   .compass-outer{width:240px;height:240px}
